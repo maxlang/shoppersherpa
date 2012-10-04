@@ -12,8 +12,8 @@ Environment setup on Windows (assumes you already have python, and git installed
  - go to the uncompressed pip directory and: python setup.py install
  - Add your python c:\Python2x\Scripts to the path
 
-4) From inside the git repository run 'environment-setup.ps1' from the commandline (should work in gitbash or windows powershell)
-NOTE: there will be some errors because some lines only work in powershell and vice versa
+4) From gitbash run 'source environment-setup.bash' from powershell run 'environment-setup.ps1'
 
+5) To use the virtual environment, run 'source ./Scripts/activate' from bash and for powershell cd to 'Scripts' and run './activate.ps1'
 
-If something messes up, you can run 'environment-delete.ps1' to start over.
+If something messes up, you can run 'environment-delete.ps1' to start over (should work in both, just deletes everything)

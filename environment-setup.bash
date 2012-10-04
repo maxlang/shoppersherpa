@@ -5,10 +5,10 @@ pip install virtualenv
 virtualenv .
 
 pushd ./Scripts
-./activate
+source activate
 popd
 
-$env:VS90COMNTOOLS=$env:VS100COMNTOOLS
+VS90COMNTOOLS=$VS100COMNTOOLS
 
 pip install hg+https://bitbucket.org/wkornewald/django-nonrel
 pip install hg+https://bitbucket.org/wkornewald/djangotoolbox
