@@ -1,12 +1,16 @@
 import mongoengine
 from mongoengine import *
 
-
 # TODO move this to config files
 dbName = 'test'
 
 connect(dbName)
 
+class Product(DynamicDocument):
+    pass
+
+
+'''
 # information about data providers - either retailers or manufacturers
 class Provider(DynamicDocument):
     name = StringField()
@@ -108,5 +112,5 @@ class Product(DynamicDocument):
     sources = EmbeddedDocumentField(SourceData)
     identifiers = EmbeddedDocumentField(IdentifierData)
     warranty = EmbeddedDocumentField(WarrantyData)
-
+'''
 print 'loaded model'
