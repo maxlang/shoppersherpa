@@ -1,7 +1,5 @@
 from xml.dom.minidom import parseString
-import mongomodels
-from mongomodels import Product
-import sys
+from mongomodels import *
 
 filenames = (r"C:\github\shoppersherpa\xml\bbxml1.xml",
              r"C:\github\shoppersherpa\xml\bbxml2.xml",

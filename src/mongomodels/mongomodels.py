@@ -1,14 +1,6 @@
 import mongoengine
 from mongoengine import *
 
-# TODO move this to config files
-dbName = 'test'
-
-connect(dbName)
-
-class Product(DynamicDocument):
-    pass
-
 
 '''
 # information about data providers - either retailers or manufacturers
