@@ -27,7 +27,7 @@ def upload_xml(xml, id):
         for node in prod.childNodes:
             if node.nodeType == node.ELEMENT_NODE and node.firstChild != None and node.firstChild.nodeType == node.TEXT_NODE:
                 nodeVal = parse_value(node.firstChild.nodeValue)
-                setattr(mongoProduct, node.nodeName, nodeVal)
+                mongoProduct.attr[node.nodeName]= nodeVal
         mongoProduct.save()
 
 def parse_value(val):
