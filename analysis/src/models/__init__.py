@@ -12,5 +12,6 @@ connect(dbName)
 
 class Product(DynamicDocument):
     attr = DictField()
+    meta = {'allow_inheritance': True}
 
 print 'models loaded'
