@@ -19,6 +19,7 @@ Python libraries to install:
 - scipy
 - matplotlib
 - django
+- djangotoolbox
 - pymongo
 - mongoengine
 
