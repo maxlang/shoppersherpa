@@ -100,20 +100,19 @@ class DescriptionAttr(ValueAttr):
 class URLAttr(ValueAttr):
     value = URLField()
 
-print 'removing old data'
-
-print "Product count ", len(ParsedProduct.objects)
-
-
-# clear out old values
-for p in ParsedProduct.objects:
-    p.parsedAttr = None
-    p.keywords = None
-    p.save()
-
-print 'adding new data'
-
 if __name__ == "__main__":
+    print 'removing old data'
+
+    print "Product count ", len(ParsedProduct.objects)
+
+    # clear out old values
+    for p in ParsedProduct.objects:
+        p.parsedAttr = None
+        p.keywords = None
+        p.save()
+
+    print 'adding new data'
+
     for prod in Product.objects:
         tempattr = prod.attr
         prod.delete()
