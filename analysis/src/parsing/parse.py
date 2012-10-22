@@ -1,7 +1,7 @@
-#normalize.py
-from mongoengine import (DictField, ListField, StringField, DecimalField,
-                         IntField, MapField, DateTimeField, URLField,
-                         EmbeddedDocument, EmbeddedDocumentField)
+#parse.py
+from mongoengine import (
+     DictField, ListField, StringField, DecimalField, IntField, MapField,
+     DateTimeField, URLField, EmbeddedDocument, EmbeddedDocumentField)
 
 from models import Product
 from datetime import datetime
@@ -19,6 +19,7 @@ class Attr(EmbeddedDocument):
 
 
 class ParsedProduct(Product):
+
     attr = DictField()
     parsedAttr = ListField(EmbeddedDocumentField(Attr))
     keywords = MapField(IntField())

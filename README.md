@@ -32,3 +32,5 @@ Eclipse tips:
 - add mongoengine to your forced builtins (Interpreter - Python > Forced Builtins tab)
 - I remcommend looking through the pydev editor options and choosing some things that make sense
 - In the general text editor options, I recommend showing the print margins (General > Editors > Text Editors)
+- If you create new mongoengine classes (ie inheriting from Document) you should add those models to the build path. Right click the project, go to Properties > PyDev - PYTHONPATH and click "Add source folder"
+
