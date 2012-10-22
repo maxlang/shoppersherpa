@@ -1,8 +1,9 @@
+'''
 import mongoengine
 from mongoengine import *
 
 
-'''
+
 # information about data providers - either retailers or manufacturers
 class Provider(DynamicDocument):
     name = StringField()

@@ -84,7 +84,7 @@ def setPropInProduct(product_object, node_name, value, dict):
     elif dict is review_fields:
         product_object['reviews'][0][node_name] = value
     else:
-        assert false
+        assert False
 
 def parse_value(val, type):
     if type == 0:
