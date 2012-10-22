@@ -1,5 +1,5 @@
 #normalize.py
-from mongoengine import *
+from mongoengine import EmbeddedDocument, DecimalField, StringField, DictField,
 from models import Product
 from datetime import datetime
 import re
