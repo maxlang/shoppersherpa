@@ -6,8 +6,4 @@ Created on Oct 22, 2012
 
 from parsing import ParsedProduct
 
-for a in ParsedProduct.objects.first().parsedAttr:
-    print a
 
-for p in ParsedProduct.objects:
-    p.attr
