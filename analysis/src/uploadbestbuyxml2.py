@@ -9,13 +9,17 @@ filenames = (r"C:\github\shoppersherpa\xml\bbxml1.xml",
              r"C:\github\shoppersherpa\xml\bbxml6.xml")
 
 def main():
+    print 'deleting'
     Product.objects.delete()
 
     for xml_filename in filenames:
+        print 'uploading', xml_filename
         xml_file = open(xml_filename)
         xml_str = xml_file.read()
+        upload_xml(xml_str)
 
 def upload_xml(xml):
+
     doc = parseString(xml)
     products = doc.getElementsByTagName("product")
 

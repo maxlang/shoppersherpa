@@ -331,6 +331,8 @@ if __name__ == "__main__":
 
         p.save()
 
+    print 'done'
+
 ##for p in Product.objects:
 ##  for key in p.attr:
 ##    value = p.attr[key]
