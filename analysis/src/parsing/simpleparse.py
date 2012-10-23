@@ -82,15 +82,16 @@ class DualRatioAttr(RatioAttr):
 
 
 class DimensionAttr(Attr):
-    x = EmbeddedDocumentField(UOMAttr)
-    y = EmbeddedDocumentField(UOMAttr)
-    z = EmbeddedDocumentField(UOMAttr)
+    x = EmbeddedDocumentField(ValueAttr)
+    y = EmbeddedDocumentField(ValueAttr)
+    z = EmbeddedDocumentField(ValueAttr)
+    units = StringField()
 
     def __unicode__(self):
         string = (self.attrname + ": " + unicode(self.x.value) + " " +
-            self.x.units + " by " + unicode(self.y.value) + " " + self.y.units)
+            self.units + " by " + unicode(self.y.value) + " " + self.units)
         if self.z:
-            string += unicode(self.z.value) + " " + self.z.units
+            string += unicode(self.z.value) + " " + self.units
         return string
 
     def getKeywords(self):
@@ -161,7 +162,6 @@ if __name__ == "__main__":
 
     for prod in Product.objects:
         tempattr = prod.attr
-        prod.delete()
         p = ParsedProduct(attr=tempattr)
         for key in p.attr:
             #print "parsing: ", key
@@ -210,12 +210,12 @@ if __name__ == "__main__":
                 pass
 
             # Value with units
-            match = re.match(r"^([-0-9.,]+)([^0-9]*)$", v)
+            match = re.match(r"^([-0-9.,]+)[\s]*([^\s0-9.]*)\.?\s*$", v)
             if(match):
                 p.parsedAttr.append(UOMAttr(attrname=key,
                     value=float(match.group(1).replace(",", "")),
                     units=match.group(2)))
-                #print "unit val: ", v
+                print "unit val: ", v
                 continue
 
             # Ratios
@@ -232,41 +232,46 @@ if __name__ == "__main__":
             match = re.match(r'''
                              ^([-0-9.,]+)        # Starts with a decimal number
                              \s*                 # Any number of spaces
-                             ([^0-9]*)           # Non numeric string (units)
-                             \s?                 # An optional string
+                             ([^0-9.]*)          # Non numeric string (units)
+                             \.?\s*              # An optional string
                              (?:x|\*|by|BY|By)   # a multiplication symbol
                              \s?                 # another optional space
                              ([-0-9.,]+)         # second number
                              \s*
-                             ([^0-9]*)           # second units
+                             ([^0-9.]*)           # second units
                              (?:                 # optional third dimension
-                                 \s?
+                                 \.?\s*
                                  (?:x|\*|by|BY|By)
                                  \s?
                                  ([-0-9.,]+)
                                  \s*
-                                 ([^0-9]*)
+                                 ([^0-9.]*)
                              )?                 # end of string
+                             \s*
                              $''',
                              v,
                              flags=re.X)
 
             if(match):
-                dims = DimensionAttr(attrname=key)
-                dims.x = UOMAttr(value=float(match.group(1).replace(",", "")),
-                                 units=match.group(2))
-                dims.y = UOMAttr(value=float(match.group(3).replace(",", "")),
-                                 units=match.group(4))
-                if(match.group(5)):
-                    dims.z = UOMAttr(
-                        value=float(match.group(5).replace(",", "")),
-                        units=match.group(6))
-                p.parsedAttr.append(dims)
-                #print dims.x.value,dims.x.units,"x",dims.y.value,dims.y.units
-                #if dims.z:
-                #print "x",dims.z.value,dims.z.units
-                #print "dimensions: ", v
-                continue
+                if ((match.group(2).strip() == match.group(4).strip())
+                        and (not match.group(6)
+                             or match.group(2).strip() == match.group(6).strip())):
+                    dims = DimensionAttr(attrname=key,
+                                         units=match.group(2).strip())
+                    dims.x = ValueAttr(
+                        value=float(match.group(1).replace(",", "")))
+                    dims.y = ValueAttr(
+                        value=float(match.group(3).replace(",", "")))
+                    if(match.group(5)):
+                        dims.z = ValueAttr(
+                            value=float(match.group(5).replace(",", "")))
+                    p.parsedAttr.append(dims)
+                    print "dimensions: ", v
+                    continue
+                else:
+                    print "UNIT MISMATCH: "
+                    print v
+                    print match.group(2), match.group(4), match.group(6)
 
             #compound fractions with units
 
@@ -276,7 +281,7 @@ if __name__ == "__main__":
                               ([0-9.]*)
                               \ ?/\ ?                        #escaped spaces
                               ([0-9.]*)
-                              ([^0-9.]*)$''',
+                              ([^0-9.\s]*)\.?\s*$''',
                               v,
                               flags=re.X)
             if(match):
@@ -290,7 +295,7 @@ if __name__ == "__main__":
                 p.parsedAttr.append(uomattr)
                 #print float(match.group(1).replace(",",""))+
                 #            (float(match.group(2))/float(match.group(3)))
-                #print "compound fraction: ", v
+                print "compound fraction: ", v
                 continue
 
             # URL
@@ -303,7 +308,7 @@ if __name__ == "__main__":
                 pass
 
             # Value with units and description
-            match = re.match(r"^([-0-9.,]+)\s?([^ 0-9]*)\s+([^;\\/,:-_]*)$",
+            match = re.match(r"^([-0-9.,]+)\s*([^\s+0-9.]+)\.?\s+([^;\\/,:-_]*)$",
                              v)
             if(match):
                 p.parsedAttr.append(UOMDescriptionAttr(
@@ -311,7 +316,10 @@ if __name__ == "__main__":
                     value=float(match.group(1).replace(",", "")),
                     units=match.group(2),
                     description=match.group(3)))
-                #print "unit val + desc: ", v
+                print "unit val + desc: ", v
+                print match.group(1)
+                print match.group(2)
+                print match.group(3)
                 continue
 
             #dual ratios
@@ -382,6 +390,7 @@ if __name__ == "__main__":
             print counts
 
         p.save()
+        prod.delete()
 
     print 'done'
 
