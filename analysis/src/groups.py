@@ -26,4 +26,3 @@ for p in ParsedProduct.objects:
 
             else:
                 units[name] = a.units
-

@@ -1,14 +1,14 @@
 from mongoengine import *
-from mongomodels import Product
+from models import Product
 import matplotlib.pyplot as plt
 
-connection = Connection()
-db = connection.test
+#connect('test')
+#db = connection.test
 
 price = []
 size = []
 
-for o in Product.objects.find():
+for o in Product.objects:
     attr = o['attr']
     try:
         size.append(attr['screenSizeIn'])
