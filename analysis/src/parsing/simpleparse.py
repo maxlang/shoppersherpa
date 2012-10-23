@@ -14,7 +14,7 @@ urlValidator = URLValidator(verify_exists=False)
 class Attr(EmbeddedDocument):
     attrname = StringField()
 
-    def __str__(self):
+    def __unicode__(self):
         return self.attrname + ":"
 
 
@@ -29,37 +29,56 @@ class ParsedProduct(Product):
 class ValueAttr(Attr):
     value = DecimalField()
 
-    def __str__(self):
-        return self.attrname + ": " + str(self.value)
+    def __unicode__(self):
+        return self.attrname + ": " + unicode(self.value)
+
+    def getKeywords(self):
+        return []
+
+    def getValue(self):
+        return self.value
 
 
 class UOMAttr(ValueAttr):
     units = StringField()
 
-    def __str__(self):
-        return self.attrname + ": " + str(self.value) + " " + str(self.units)
-        #return super(ValueAttr,self).__str__() + " " + self.units
+    def __unicode__(self):
+        return self.attrname + ": " + unicode(self.value) + " " + unicode(self.units)
+        #return super(ValueAttr,self).__unicode__() + " " + self.units
+
+    def getKeywords(self):
+        return []
 
 
 class DateTimeAttr(ValueAttr):
     value = DateTimeField()
+
+    def getKeywords(self):
+        return []
 
 
 class RatioAttr(Attr):
     top = DecimalField()
     bottom = DecimalField()
 
-    def __str__(self):
-        return self.attrname + ": " + str(self.top) + ":" + str(self.bottom)
+    def __unicode__(self):
+        return self.attrname + ": " + unicode(self.top) + ":" + unicode(self.bottom)
+
+    def getKeywords(self):
+        return [unicode(self.top) + ":" + unicode(self.bottom)]
 
 
 class DualRatioAttr(RatioAttr):
     top2 = DecimalField()
     bottom2 = DecimalField()
 
-    def __str__(self):
-        return (self.attrname + ": " + str(self.top) + ":" + str(self.bottom) +
-                " and " + str(self.top2) + ":" + str(self.bottom2))
+    def __unicode__(self):
+        return (self.attrname + ": " + unicode(self.top) + ":" + unicode(self.bottom) +
+                " and " + unicode(self.top2) + ":" + unicode(self.bottom2))
+
+    def getKeywords(self):
+        return [unicode(self.top) + ":" + unicode(self.bottom),
+                unicode(self.top2) + ":" + unicode(self.bottom2)]
 
 
 class DimensionAttr(Attr):
@@ -67,38 +86,65 @@ class DimensionAttr(Attr):
     y = EmbeddedDocumentField(UOMAttr)
     z = EmbeddedDocumentField(UOMAttr)
 
-    def __str__(self):
-        string = (self.attrname + ": " + str(self.x.value) + " " +
-            self.x.units + " by " + str(self.y.value) + " " + self.y.units)
+    def __unicode__(self):
+        string = (self.attrname + ": " + unicode(self.x.value) + " " +
+            self.x.units + " by " + unicode(self.y.value) + " " + self.y.units)
         if self.z:
-            string += str(self.z.value) + " " + self.z.units
+            string += unicode(self.z.value) + " " + self.z.units
         return string
+
+    def getKeywords(self):
+        values = [self.x.value, self.y.value]
+        if self.z:
+            values.append(self.z.value)
+        values.sort()
+        return ["x".join(values)]
 
 
 class UOMDescriptionAttr(UOMAttr):
     description = StringField()
 
-    def __str__(self):
-        return self.attrname + ": " + str(self.value) + " " + \
-                    str(self.units) + " - " + self.description
+    def __unicode__(self):
+        return self.attrname + ": " + unicode(self.value) + " " + \
+                    unicode(self.units) + " - " + self.description
+
+    def getKeywords(self):
+        return []
 
 
 class ListAttr(Attr):
     values = ListField(StringField())
 
-    def __str__(self):
+    def __unicode__(self):
         string = ""
         for value in self.values:
             string += value + " , "
         return self.attrname + ": " + string
 
+    def getKeywords(self):
+        return []
+
+
+class StringAttr(ValueAttr):
+    value = StringField()
+
+    def getKeywords(self):
+        return [self.value]
+
 
 class DescriptionAttr(ValueAttr):
     value = StringField()
 
+    def getKeywords(self):
+        return []
+
 
 class URLAttr(ValueAttr):
     value = URLField()
+
+    def getKeywords(self):
+        return []
+
 
 if __name__ == "__main__":
     print 'removing old data'
@@ -257,7 +303,7 @@ if __name__ == "__main__":
                 pass
 
             # Value with units and description
-            match = re.match(r"^([-0-9.,]+)\s?([^\s0-9]*)\s+([^;\\/,:-_]*)$",
+            match = re.match(r"^([-0-9.,]+)\s?([^ 0-9]*)\s+([^;\\/,:-_]*)$",
                              v)
             if(match):
                 p.parsedAttr.append(UOMDescriptionAttr(
@@ -296,7 +342,7 @@ if __name__ == "__main__":
 
             # Simple String
             if max(counts.values()) == 0:
-                p.parsedAttr.append(DescriptionAttr(attrname=key, value=v))
+                p.parsedAttr.append(StringAttr(attrname=key, value=v))
                 #print "simple string: ", v
                 continue
 
@@ -305,7 +351,10 @@ if __name__ == "__main__":
             del nonSpaceCounts[' ']
             nonSpaceMax = max(nonSpaceCounts.values())
             if nonSpaceMax == 0:
-                p.parsedAttr.append(DescriptionAttr(attrname=key, value=v))
+                if(counts[' '] > 2):
+                    p.parsedAttr.append(DescriptionAttr(attrname=key, value=v))
+                else:
+                    p.parsedAttr.append(StringAttr(attrname=key, value=v))
                 #print "only spaces string: ", v
                 continue
 
