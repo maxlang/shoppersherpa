@@ -19,13 +19,11 @@ class Attr(EmbeddedDocument):
 
 
 class ParsedProduct(Product):
-
     attr = DictField()
     parsedAttr = ListField(EmbeddedDocumentField(Attr))
     keywords = MapField(IntField())
 
     meta = {'allow_inheritance': True}
-
 
 class ValueAttr(Attr):
     value = DecimalField()
