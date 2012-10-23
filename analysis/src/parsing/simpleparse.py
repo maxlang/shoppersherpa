@@ -201,7 +201,8 @@ if __name__ == "__main__":
                                  ([^0-9]*)
                              )?                 # end of string
                              $''',
-                             v)
+                             v,
+                             flags=re.X)
 
             if(match):
                 dims = DimensionAttr(attrname=key)
@@ -229,7 +230,8 @@ if __name__ == "__main__":
                               \ ?/\ ?                        #escaped spaces
                               ([0-9.]*)
                               ([^0-9.]*)$''',
-                              v)
+                              v,
+                              flags=re.X)
             if(match):
                 fractionValue = (float(match.group(1).replace(",", "")) +
                     (float(match.group(2)) / float(match.group(3))))
@@ -274,7 +276,8 @@ if __name__ == "__main__":
                              ([-0-9.,]+)
                              :
                              ([-0-9.,]+)$''',
-                             v)
+                             v,
+                             flags=re.X)
             if(match):
                 p.parsedAttr.append(DualRatioAttr(
                     attrname=key,
@@ -321,7 +324,7 @@ if __name__ == "__main__":
                 p.parsedAttr.append(ListAttr(
                      attrname=key,
                      values=[s.strip() for s in v.split(delimeter)]))
-                print "list of strings: ", v
+                #print "list of strings: ", v
                 continue
 
             p.parsedAttr.append(DescriptionAttr(attrname=key, value=v))
