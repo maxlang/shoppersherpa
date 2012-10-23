@@ -1,16 +1,8 @@
-from mongoengine import connect, DynamicDocument, DictField
-import mongoengine
+from mongoengine import connect
+from models.mongomodels import Product
 
 db = 'test'
 
 connect(db)
-
-dbName = 'test'
-
-connect(dbName)
-
-
-class Product(DynamicDocument):
-    attr = DictField()
 
 print 'models loaded'
