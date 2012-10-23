@@ -25,6 +25,7 @@ class ParsedProduct(Product):
 
     meta = {'allow_inheritance': True}
 
+
 class ValueAttr(Attr):
     value = DecimalField()
 
