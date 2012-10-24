@@ -97,6 +97,3 @@ if __name__ == "__main__":
     #/html/htmledition/evaluation-of-clustering-1.html
     #print nmi(array([1,1,1,1,1,1,2,2,2,2,2,2,3,3,3,3,3])
     #          ,array([1,1,1,1,2,1,2,2,2,2,3,1,3,3,3,2,2]))
-    
-    
-    

@@ -52,4 +52,3 @@ for p in ParsedProduct.objects:
                 print "attribute: ", name
                 print "unit: ", unit
                 print "full attribute: ", a
-
