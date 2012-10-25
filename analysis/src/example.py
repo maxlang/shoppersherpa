@@ -3,7 +3,6 @@ Created on Oct 22, 2012
 
 @author: Max Lang
 '''
-
 from parsing import ParsedProduct
 from matplotlib import pyplot
 from numpy import array, log, e
@@ -13,6 +12,7 @@ price = []         # regularPrice
 avg_review = []     # customerReviewAverage
 num_review = []     # customerReviewCount
 
+# pylint: disable-msg=E1101
 for p in ParsedProduct.objects.limit(500):
     try:
         size.append(p.attr['screenSizeIn'])
