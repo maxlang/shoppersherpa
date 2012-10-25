@@ -5,6 +5,7 @@ import numpy
 from numpy import *
 from scipy import *
 from parsing import ParsedProduct
+from matplotlib import pyplot
 
 
 #Mutual information
@@ -34,6 +35,9 @@ def nmi(x, y):
     for l2 in unique(y):
         l2_count = nonzero(y == l2)[0].size
         Hy += -(double(l2_count) / N) * log2(double(l2_count) / N)
+
+    if Hx + Hy == 0:
+        return 0
     return I / ((Hx + Hy) / 2)
 
 
@@ -68,8 +72,9 @@ def make_bucket_array(attr_name, dataset, buckets):
             for i in range(len(buckets)):
                 if val < buckets[i]:
                     attr_arr.append(i)
+                    break
 
-        return array(attr_arr)
+    return array(attr_arr)
 
 
 def make_even_buckets(attr_name, dataset, num_buckets):
@@ -110,7 +115,8 @@ if __name__ == "__main__":
     print 'ready'
 
     my_xvars = ('screenSizeClassIn', 'tvType', 'verticalResolution')
-    my_yvars = (('regularPrice', (400, 800, 1200, 1600, 2000, 3000, 4000, 6000)), ('customerReviewAverage'))
+    #my_yvars = (('regularPrice', range(0, 10000, 100)), ('customerReviewAverage'))
+    my_yvars = (('regularPrice', (156.25, 312.5, 625, 1250, 2500, 5000)), ('customerReviewAverage', (2.01, 3.01, 4.26, 4.51, 4.76)))
 
     prods = ParsedProduct.objects.all()
 
@@ -124,6 +130,7 @@ if __name__ == "__main__":
             if len(yvar) > 1:
                 #bkts = make_even_buckets(yvar[0], my_dataset, yvar[1])
                 y_arr = make_bucket_array(yvar[0], my_dataset, yvar[1])
+                pass
             else:
                 y_arr = make_discrete_array(yvar, my_dataset)
 
