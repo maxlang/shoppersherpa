@@ -5,13 +5,13 @@ size = []
 
 for p in ParsedProduct.objects:
     try:
-        size.append(p.attr['screenSizeIn'])
-        price.append(p.attr['regularPrice'])
+        size.append(p.attr['screenSizeIn']);
+        price.append(p.attr['regularPrice']);
     except KeyError:
         pass
     try:
-        size.append(p.attr['screenSizeClassIn'])
-        price.append(p.attr['regularPrice'])
+        size.append(p.attr['screenSizeClassIn']);
+        price.append(p.attr['regularPrice']);
     except KeyError:
         print ("Couldn't find any key for product with attributes:",
                p.parsedAttr)
