@@ -43,7 +43,8 @@ public class AWSECommerceService
     }
 
     public AWSECommerceService(WebServiceFeature... features) {
-        super(__getWsdlLocation(), AWSECOMMERCESERVICE_QNAME, features);
+        super(__getWsdlLocation(), AWSECOMMERCESERVICE_QNAME);
+        //super(__getWsdlLocation(), AWSECOMMERCESERVICE_QNAME, features);
     }
 
     public AWSECommerceService(URL wsdlLocation) {
@@ -51,7 +52,8 @@ public class AWSECommerceService
     }
 
     public AWSECommerceService(URL wsdlLocation, WebServiceFeature... features) {
-        super(wsdlLocation, AWSECOMMERCESERVICE_QNAME, features);
+        super(wsdlLocation, AWSECOMMERCESERVICE_QNAME);
+        //super(wsdlLocation, AWSECOMMERCESERVICE_QNAME, features);
     }
 
     public AWSECommerceService(URL wsdlLocation, QName serviceName) {
@@ -59,7 +61,8 @@ public class AWSECommerceService
     }
 
     public AWSECommerceService(URL wsdlLocation, QName serviceName, WebServiceFeature... features) {
-        super(wsdlLocation, serviceName, features);
+        super(wsdlLocation, serviceName);
+        //super(wsdlLocation, serviceName, features);
     }
 
     /**

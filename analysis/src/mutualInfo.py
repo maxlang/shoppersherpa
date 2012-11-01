@@ -116,9 +116,13 @@ if __name__ == "__main__":
 
     my_xvars = ('screenSizeClassIn', 'tvType', 'verticalResolution')
     #my_yvars = (('regularPrice', range(0, 10000, 100)), ('customerReviewAverage'))
-    my_yvars = (('regularPrice', (156.25, 312.5, 625, 1250, 2500, 5000)), ('customerReviewAverage', (2.01, 3.01, 4.26, 4.51, 4.76)))
+    my_yvars = ('screenSizeClassIn', ('regularPrice', (156.25, 312.5, 625, 1250, 2500, 5000)), ('customerReviewAverage', (2.01, 3.01, 4.26, 4.51, 4.76)))
 
-    prods = ParsedProduct.objects.all()
+    #prods = []
+    #for p in ParsedProduct.objects.all():
+    #    prods.append(p)
+
+    prods = ParsedProduct.objects.select_related()
 
     for xvar in my_xvars:
         for yvar in my_yvars:
