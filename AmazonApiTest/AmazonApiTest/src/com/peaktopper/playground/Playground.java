@@ -50,7 +50,7 @@ public class Playground {
 					
 					if(browseNode.getName().equals(name)) {
 						return browseNode.getBrowseNodeId();
-					} else if(browseNode.getName().contains(guides.get(0))) {
+					  } else if(guides.size()>0 && browseNode.getName().contains(guides.get(0))) {
 						String nextBrowseNode = browseNode.getBrowseNodeId();
 						guides.remove(0);
 						return findBrowseNode(nextBrowseNode, name, guides);
