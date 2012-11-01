@@ -13,7 +13,7 @@ for p in ParsedProduct.objects:
         size.append(p.attr['screenSizeClassIn']);
         price.append(p.attr['regularPrice']);
     except KeyError:
-        print ("Couldn't find any key for product with attributes:",
+        print (u"Couldn't find any key for product with attributes:", 
                p.parsedAttr)
 
 import matplotlib.pyplot as plt
