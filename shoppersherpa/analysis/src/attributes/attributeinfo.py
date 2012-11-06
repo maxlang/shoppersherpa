@@ -29,20 +29,30 @@ class AttrInfo(DynamicDocument):
 #def sum_func(obj, prev):
 #    
 
+def sum_field(doc_set, field):
+    total = 0
+    for d in doc_set:
+        attr = d['attr']
+        if field in attr:
+            total += attr[field]
+            
+def find_median(doc_set, field):
+    vals = [x['attr'][field] for x in doc_set]
+    vals.sort()
+
 
 if __name__ == "__main__":
     #prods = ParsedProduct.objects.select_related()
+    #prods = ParsedProduct.objects
 
     use_attrs = ['tvType', 'screenSizeIn']
 
     rank = 1
     for cur_attr in use_attrs:
         full_attr_str = "attr.{0}".format(cur_attr)
-        #exist_set = ParsedProduct.objects(full_attr_str__exists=True)
-        
-        #values = ParsedProduct.objects.distinct(full_attr_str)
-        #values = ParsedProduct.objects(attr.tvType__exists=True).distinct(field=attr.tvType)
-        
+        filter_attr_str = "attr__{0}".format(cur_attr)
+        values = ParsedProduct.objects.distinct(full_attr_str)
+
         print "distinct values: {0}".format(values)
 
         new_ai = AttrInfo()
@@ -51,15 +61,26 @@ if __name__ == "__main__":
         rank = rank + 1
 
         new_ai.stats = AttrStats()
-        new_ai.stats.count = prods.count({full_attr_str: {"$exists": True}})
+        new_ai.stats.count = ParsedProduct.objects(**{filter_attr_str: {"$exists": True}}).count()
+        print new_ai.stats.count
 
         for val in values:
             avs = AttrValueStats()
-            avs.count = prods.count({full_attr_str: val})
-            #sum_price = prods.group({key: {regularPrice: True},
+            val_set = ParsedProduct.objects(**{filter_attr_str: val})
+            avs.count = val_set.count()
+            #sum_price = ParsedProduct.objects.group({key: {"regularPrice": True},
             #                         cond: {full_attr_str: val},
             #                         reduce: function()
             #                          )
+            avs.mean_price = sum_field(val_set, 'regularPrice') / avs.count
+            
             new_ai.stats.values[val] = avs
+
+            #map_func = "function() {emit('xx', this.regularPrice)}"
+            #reduce_func = "function(key, values) {var sum=0; for (var i=0; i<values. length; i++) {sum += values[i];} return sum;}"
+            #ParsedProduct.objects.map_reduce(map_func, reduce_func, output='mapreduceout')
+
+
+            print "{0} {1}".format(val, new_ai.stats.values[val].count)
 
     pass
