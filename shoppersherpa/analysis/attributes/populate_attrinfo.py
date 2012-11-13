@@ -50,7 +50,7 @@ if __name__ == "__main__":
 
     refresh_ai = AttrInfo()
     refresh_ai.name = "refresh"
-    refresh_ai.display_name = "Refresh"
+    refresh_ai.display_name = "Refresh Rate"
     refresh_ai.is_discrete = True
     refresh_ai.is_independant = True
     refresh_ai.rank = 5
@@ -120,7 +120,8 @@ if __name__ == "__main__":
 
     for ai_tup in ai_elements:
         ai = ai_tup[0]
-        vals = Product.objects.distinct(ai.name)
+        vals = filter(lambda x: x is not None,
+                      Product.objects.distinct("normalized.{0}".format(ai.name)))
         #vals.sort()
         ai.values = vals
         ai.save()
