@@ -7,7 +7,7 @@ Created on Thu Nov 01 13:07:10 2012
 from mongoengine import (
     DictField, ListField, StringField, DecimalField, IntField, MapField,
     DateTimeField, URLField, EmbeddedDocument, EmbeddedDocumentField,
-    DynamicDocument,connect)
+    BooleanField, DynamicDocument,connect)
 
 #TODO: move away from models
 #TODO: make db configurable
@@ -15,6 +15,7 @@ connect('test')
 
 class Product(DynamicDocument):
     attr = DictField()
+    normalized = DictField()
     meta = {'allow_inheritance': True}
 
 
@@ -55,6 +56,17 @@ class UOMAttr(ValueAttr):
 
     def getKeywords(self):
         return []
+
+
+class AttrInfo(DynamicDocument):
+    name = StringField()
+    display_name = StringField()
+    rank = IntField()
+    is_discrete = BooleanField()
+    is_independant = BooleanField()
+    units = StringField()
+    values = ListField()
+    meta = {'allow_inheritance': True}
 
 
 class DateTimeAttr(ValueAttr):
