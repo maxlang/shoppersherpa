@@ -69,9 +69,9 @@ class AttrInfo(DynamicDocument):
     meta = {'allow_inheritance': True}
 
     def __unicode__(self):
-        return (self.rank + ") " +
-                self.display_name + ": " +
-                self.values + " " + self.units)
+        return "{0}) {1}: {2} {3}".format(self.rank,
+                                          self.display_name,
+                                          self.values,self.units)
 
 
 class DateTimeAttr(ValueAttr):

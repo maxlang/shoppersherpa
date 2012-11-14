@@ -3,3 +3,5 @@
 /Lib/
 *.pyc
 /.settings/
+*.log
+logs/*

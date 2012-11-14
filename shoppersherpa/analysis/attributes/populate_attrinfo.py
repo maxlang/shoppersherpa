@@ -1,4 +1,4 @@
-from models.models import (AttrInfo, Product, ParsedProduct)
+from shoppersherpa.models.models import (AttrInfo, Product, ParsedProduct)
 import numpy
 #from shoppersherpa.models import ParsedProduct
 
