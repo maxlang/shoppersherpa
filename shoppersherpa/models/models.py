@@ -68,6 +68,11 @@ class AttrInfo(DynamicDocument):
     values = ListField()
     meta = {'allow_inheritance': True}
 
+    def __unicode__(self):
+        return (self.rank + ") " +
+                self.display_name + ": " +
+                self.values + " " + self.units)
+
 
 class DateTimeAttr(ValueAttr):
     value = DateTimeField()
