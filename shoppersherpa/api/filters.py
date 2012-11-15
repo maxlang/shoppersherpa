@@ -5,8 +5,7 @@ Created on Wed Nov 14 01:41:02 2012
 @author: Max Lang
 """
 
-from api import decodeJson
-import logging
+from shoppersherpa import logging
 
 logger = logging.getLogger(__name__)
 
@@ -30,7 +29,7 @@ class Filter(object):
     30.0
     >>> f.min
     6.0
-    >>> f.toMongoengineFilters()
+    >>> f.toMongo()
     {'normalized__size__lte': 30.0, 'normalized__size__gte': 6.0}
 
     >>> f2 = Filter({'attribute':'brand', 'type':'exclude','value':['Sony','Samsung','Toshiba']})
@@ -38,11 +37,9 @@ class Filter(object):
     True
     >>> f2.values
     ['Sony', 'Samsung', 'Toshiba']
-    >>> f2.toMongoengineFilters()
+    >>> f2.toMongo()
     {'normalized__brand__not__in': ['Sony', 'Samsung', 'Toshiba']}
 
-    >>> mergeMongoengineFilters([f,f2])
-    {'normalized__size__lte': 30.0, 'normalized__brand__not__in': ['Sony', 'Samsung', 'Toshiba'], 'normalized__size__gte': 6.0}
     """
 
 
@@ -79,7 +76,7 @@ class Filter(object):
     def isRange(self):
         return self.type == "range"
 
-    def toMongoengineFilters(self,prefix="normalized"):
+    def toMongo(self,prefix="normalized"):
         """Returns the appropriate mongoengine filter dictionary.
 
         Prefix is the object containing the attributes.
@@ -96,20 +93,39 @@ class Filter(object):
                 d["{0}__{1}__lte".format(prefix, self.attribute)]=self.max
         return d
 
-def mergeMongoengineFilters(filterList,prefix=None):
-    """Given a list of filters, return a dictionary representing the combined
-    set of filters formatted for mongoengine"""
+class FilterMerger(object):
+    ''' Holds a bunch of filters, and merges them when required.
 
-    d = dict()
+    >>> f = FilterMerger()
+    >>> f.merge()
+    {}
+    >>> f.add({'attribute':'size','type':'range','value':[6,30]})
+    >>> f.merge()
+    {'normalized__size__lte': 30.0, 'normalized__size__gte': 6.0}
+    >>> f.add({'attribute':'brand', 'type':'exclude','value':['Sony','Samsung','Toshiba']})
+    >>> f.merge()
+    {'normalized__size__lte': 30.0, 'normalized__brand__not__in': ['Sony', 'Samsung', 'Toshiba'], 'normalized__size__gte': 6.0}
 
-    for filter in filterList:
-        args = dict()
-        if prefix:
-            args['prefix'] = prefix
-        d = dict(d.items() + filter.toMongoengineFilters(**args).items())
+   '''
 
-    return d
+    filters = []
+    def add(self,f):
+        self.filters.append(Filter(f))
+
+    def merge(self,prefix=None):
+        """Given a list of filters, return a dictionary representing the combined
+        set of filters formatted for mongoengine"""
+
+        d = dict()
+
+        for f in self.filters:
+            args = dict()
+            if prefix:
+                args['prefix'] = prefix
+            d = dict(d.items() + f.toMongo(**args).items())
+
+        return d
 
 if __name__ == "__main__":
     import doctest
-    doctest.testmod(verbose=True)
+    doctest.testmod()
