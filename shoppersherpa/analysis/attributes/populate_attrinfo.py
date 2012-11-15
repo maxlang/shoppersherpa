@@ -1,5 +1,4 @@
-from models.models import (AttrInfo, Product, ParsedProduct)
-import numpy
+from shoppersherpa.models.models import (AttrInfo, Product)
 #from shoppersherpa.models import ParsedProduct
 
 
@@ -62,35 +61,40 @@ if __name__ == "__main__":
     is_3d_ai.is_discrete = True
     is_3d_ai.is_independant = True
     is_3d_ai.rank = 6
+    is_3d_ai.units = None
 
     color_ai = AttrInfo()
     color_ai.name = "color"
     color_ai.display_name = "Color"
     color_ai.is_discrete = True
     color_ai.is_independant = True
+    color_ai.units = None
     color_ai.rank = 7
-    color_ai.save()
 
     num_rating_ai = AttrInfo()
     num_rating_ai.name = "ratings_num"
-    num_rating_ai.name = "Number of Ratings"
+    num_rating_ai.display_name = "Number of Ratings"
     num_rating_ai.is_discrete = False
     num_rating_ai.is_independant = False
-    num_rating_ai.save()
+    num_rating_ai.units = None
+    num_rating_ai.rank = None
 
     avg_rating_ai = AttrInfo()
     avg_rating_ai.name = "ratings_avg"
-    avg_rating_ai.name = "Average Ratings"
+    avg_rating_ai.display_name = "Average Ratings"
     avg_rating_ai.is_discrete = False
     avg_rating_ai.is_independant = False
-    avg_rating_ai.save()
+    avg_rating_ai.units = None
+    avg_rating_ai.rank = None
 
     price_ai = AttrInfo()
     price_ai.name = "price"
-    price_ai.name = "Price"
+    price_ai.display_name = "Price"
     price_ai.is_discrete = False
     price_ai.is_independant = False
-    price_ai.save()
+    price_ai.units = None
+    price_ai.rank = None
+
 
     ai_elements = [(size_ai, lambda x: fallbackNormalize(x, ['screenSizeIn', 'screenSizeClassIn'])),
                    (brand_ai, lambda x: fallbackNormalize(x, ['manufacturer'])),

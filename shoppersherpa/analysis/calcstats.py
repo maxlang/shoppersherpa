@@ -11,7 +11,7 @@ def convertToVector(doc_set, field):
     return numpy.array([ls])
 
 
-def makeParamDict(indep = None, val = None, dep = None, min_ratings = None):
+def makeParamDict(indep=None, val=None, dep=None, min_ratings=None):
     param_dict = {}
     if indep is not None:
         if val is None:
@@ -29,17 +29,17 @@ def makeParamDict(indep = None, val = None, dep = None, min_ratings = None):
 
 #returns a numpy array of a dependant attribute (like price, ratings avg) for a
 #given independant attribute-value pair (e.g. tvType='LED Flat-Screen')
-def getArrayForAttrVal(indep, val, dep, min_ratings = None):
+def getArrayForAttrVal(indep, val, dep, min_ratings=None):
     param_dict = makeParamDict(indep, val, dep, min_ratings)
     arr = convertToVector(Product.objects(**param_dict), dep)
     return arr
 
 
-def attrValMedian(indep, val, dep, min_ratings = None):
+def attrValMedian(indep, val, dep, min_ratings=None):
     return numpy.median(getArrayForAttrVal(indep, val, dep, min_ratings))
 
 
-def attrValStd(indep, val, dep, min_ratings = None):
+def attrValStd(indep, val, dep, min_ratings=None):
     return numpy.std(getArrayForAttrVal(indep, val, dep, min_ratings))
 
 
