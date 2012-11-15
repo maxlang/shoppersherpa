@@ -101,14 +101,20 @@ def query(jsonString):
         logger.info("No filters in query json: %s", jsonQuery)
 
     # get attribute data
+        attributeData = []
 
     # get selected attributes
-
+        selectedAttributes = []
     # get raw product data
-
+        productData = []
     # get top products
-
+        exampleProducts = []
     # combine
+        result = {}
+        result['attributes'] = attributeData
+        result['selected'] = selectedAttributes
+        result['products'] = productData
+        result['examples'] = exampleProducts
 
 if __name__ == "__main__":
     import doctest
