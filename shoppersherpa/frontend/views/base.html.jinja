@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <title>{% block title %}buynoculars{% endblock %}</title>
+  <link rel="icon" type="image/png" href="static/images/favicon.png" />
+  {% block stylesheets %}
+    <link href="/static/main.css" rel="stylesheet" />
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  {% endblock %}
+</head>
+
+<body>
+<header></header>
+<div id="content">
+{% block content %}
+
+{% endblock %}
+</div>
+<footer></footer>
+
+</body>
+
+</html>

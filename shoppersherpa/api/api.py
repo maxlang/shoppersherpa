@@ -66,14 +66,14 @@ def query(jsonString):
 
     Example input:
 
-    {"keywords":"600Hz 1080p used Plasma HDTV",
-    "attributes":["size"],
-    "filters":[{"attribute":"brand",
-                "type":"include",
-                "value":["Sony","Toshiba"]},
-               {"attribute":"size",
-                "type":"range",
-                "value":[6,null]}]}
+    '{"keywords":"600Hz 1080p used Plasma HDTV",\
+    "attributes":["size"],\
+    "filters":[{"attribute":"brand",\
+                "type":"include",\
+                "value":["Sony","Toshiba"]},\
+               {"attribute":"size",\
+                "type":"range",\
+                "value":[6,null]}]}'
 
     """
 
@@ -105,16 +105,28 @@ def query(jsonString):
 
     # get selected attributes
         selectedAttributes = []
+
     # get raw product data
         productData = []
+
     # get top products
         exampleProducts = []
+
     # combine
         result = {}
         result['attributes'] = attributeData
         result['selected'] = selectedAttributes
         result['products'] = productData
         result['examples'] = exampleProducts
+
+
+# get info on a single product
+def product(jsonString):
+    # decode json
+    jsonQuery = parseJson(jsonString)
+
+
+
 
 if __name__ == "__main__":
     import doctest
