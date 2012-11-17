@@ -1,8 +1,120 @@
-input {
-    width:200px;
+input,input:active,input:focus {
+    width:449px;
+    border:0px;
+/*
     border-top:0px;
     border-right:0px;
-    margin: 500px auto;
-    display: block;
+    border-bottom: solid 1px #D9D9D9;
+    border-left: solid 1px #D9D9D9;
+*/
+    font-size:30px;
+    padding:5px 10px;
+    outline:none;
+    font-family:"Trebuchet MS", Helvetica, sans-serif;
+    color: rgba(51, 51, 51, 0.5);
+    background-color:#EFE;
+    padding-top:60px;
+}
 
+div#mainInput {
+    width:520px;
+    height:100px;
+    margin: 0px auto;
+    display: block;
+    size:30px;
+    font-size:30px;
+    padding:5px 10px;
+    outline:none;
+    font-family:"Trebuchet MS", Helvetica, sans-serif;
+    color: rgba(51, 51, 51, 0.5);
+    /*background-color:#EFE;*/
+    border-bottom: solid 1px #D9D9D9;
+    position: relative;
+    left: 24px;
+
+}
+
+body {
+    background-color:#EFE;
+}
+
+img {
+    margin: 0px auto;
+    display:block;
+    border-bottom:solid 1px #DDD;
+/*
+   background-color:#EFE;
+   border-top:solid 1px;
+*/
+}
+
+
+.verticalGrid div.grid {
+    border-left:solid 1px #DDD;
+    width:5px;
+    height:5px;
+    float:left;
+}
+
+.verticalGrid div.grid.major{
+    height:5px;
+    padding-top:10px;
+    font-size:7px;
+    color:#797;
+}
+
+.verticalGrid div.grid:first-child {
+    height:60%;
+}
+
+.verticalGrid div.grid:last-child {
+    height:300px;
+}
+
+.horizontalGrid div.grid {
+    border-top:solid 1px #DDD;
+    width:5px;
+    height:5px;
+}
+
+.horizontalGrid div.grid.major{
+    width:5px;
+    padding-left:10px;
+    font-size:7px;
+    color:#797;
+}
+
+.horizontalGrid div.grid:first-child {
+    width:53%;
+}
+
+.horizontalGrid div.grid:last-child {
+    width:50%;
+}
+
+div.horizontalGrid {
+    width:90%;
+    position:absolute;
+    z-index:-100;
+    left:0px;
+    margin-top:-1px;
+    margin-left: 3px;
+}
+
+div.verticalGrid {
+    height:90%;
+    z-index:-100;
+    position:absolute;
+    top:0px;
+    margin-left: 13px;
+    margin-top: 3px;
+}
+
+
+
+div.imgHolder {
+    margin: 0px auto;
+    padding-top:100px;
+    padding-bottom:10px;
+    width:500px;
 }

@@ -1,5 +1,21 @@
 {% extends "base.html.jinja" %}
 
 {% block content %}
-<input>
+
+<div class="imgHolder">
+<div class="horizontalGrid">
+    {% for i in range(29) %}
+
+    <div class="grid {{ "major" if loop.index is divisibleby 5}}">{{ loop.index if loop.index is divisibleby 5}}</div>
+    {% endfor %}
+</div>
+<div class="verticalGrid">
+    {% for i in range(22) %}
+    <div class="grid {{ "major" if loop.index is divisibleby 5}}">{{ loop.index if loop.index is divisibleby 5}}</div>
+    {% endfor %}
+</div>
+
+
+<img src="/static/img/verrnesmallsquare4.png" /></div>
+<div id="mainInput"><input placeholder="product search"><span>&rarr;</span></div>
 {% endblock %}
