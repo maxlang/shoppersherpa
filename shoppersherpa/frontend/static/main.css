@@ -52,7 +52,7 @@ div#mainInput {
 
 .line.right {
     position:absolute;
-    border-left:solid 1px #DDD;
+    border-left:solid 2px #DDD;
     height:150px;
     width:0px;
     left:158px;
@@ -61,7 +61,7 @@ div#mainInput {
 
 .line.left {
     position:absolute;
-    border-left:solid 1px #DDD;
+    border-left:solid 2px #DDD;
     height:150px;
     width:0px;
     left:84px;
@@ -70,7 +70,7 @@ div#mainInput {
 
 .line.top {
     position:absolute;
-    border-top:solid 1px #DDD;
+    border-top:solid 2px #DDD;
     width:150px;
     height:0px;
     top:60px;
@@ -79,7 +79,7 @@ div#mainInput {
 
 .line.bottom {
     position:absolute;
-    border-top:solid 1px #DDD;
+    border-top:solid 2px #DDD;
     width:150px;
     height:0px;
     top:143px;
@@ -101,20 +101,20 @@ a:focus,
 .link:focus,
 button:hover,
 button:focus {
-  color:#a00;
+/*  color:#a00; */
   text-decoration:underline;
 }
 a:active,
 .link:active,
 button:active {
-  color:#800;
+/*  color:#800; */
 }
 a,
 .link,
 button,
 button.disabled,
 .primary-cta {
-  color:#c50000;
+/*  color:#c50000; */
   text-decoration:none;
   cursor:pointer;
 }
