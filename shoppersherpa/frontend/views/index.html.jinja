@@ -2,20 +2,17 @@
 
 {% block content %}
 
-<div class="imgHolder">
-<div class="horizontalGrid">
-    {% for i in range(29) %}
+    <div class="logoHolder">
+        <div class="left line"></div>
+        <div class="top line"></div>
+        <div class="right line"></div>
+        <div class="bottom line"></div>
 
-    <div class="grid {{ "major" if loop.index is divisibleby 5}}">{{ loop.index if loop.index is divisibleby 5}}</div>
-    {% endfor %}
-</div>
-<div class="verticalGrid">
-    {% for i in range(22) %}
-    <div class="grid {{ "major" if loop.index is divisibleby 5}}">{{ loop.index if loop.index is divisibleby 5}}</div>
-    {% endfor %}
-</div>
-
-
-<img src="/static/img/verrnesmallsquare4.png" /></div>
-<div id="mainInput"><input placeholder="product search"><span>&rarr;</span></div>
+        <h1>verrne.</h1>
+    </div>
+    <form id="query" action="/search" method="POST">
+        <div id="mainInput">
+            <input name="q" placeholder="product search"><span class="link submit">&rarr;</span>
+        </div>
+    </form>
 {% endblock %}

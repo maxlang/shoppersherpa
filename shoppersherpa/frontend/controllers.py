@@ -1,6 +1,9 @@
 import os
+
+from json import dumps
+from shoppersherpa.api.api import query
 from shoppersherpa import logging
-from bottle import (route, run, jinja2_view as view,static_file,
+from bottle import (request, get, post, run, jinja2_view as view,static_file,
                     BaseTemplate, TEMPLATE_PATH)
 
 logger = logging.getLogger(__name__)
@@ -22,18 +25,24 @@ logger.debug("view dir: %s",staticdir)
 BaseTemplate.extensions.append("jinja")
 logger.debug("added jinja extention")
 
+# static files
+@get('/static/<filepath:path>')
+def server_static(filepath):
+    return static_file(filepath, root=staticdir)
 
-@route('/')
+# home page
+@get('/')
 @view('index.html')
 def index():
     return dict()
 
-# set up static file directory
-curdir = os.path.dirname(os.path.realpath(__file__))
+# keyword search
+@post('/search')
+#   @view('search.html')
+def search():
+    q = request.forms.get('q')
+    return query(dumps({'keywords':q}))
 
-@route('/static/<filepath:path>')
-def server_static(filepath):
-    return static_file(filepath, root=staticdir)
 
 def start():
     run(host='localhost', port=8080, debug=True)

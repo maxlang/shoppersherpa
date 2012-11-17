@@ -118,7 +118,7 @@ def query(jsonString):
         result['selected'] = selectedAttributes
         result['products'] = productData
         result['examples'] = exampleProducts
-
+    return result
 
 # get info on a single product
 def product(jsonString):
