@@ -1,15 +1,21 @@
 from util import form2json
 from shoppersherpa.api.api import query
 from shoppersherpa import logging
-from bottle import (request, get, post, run, jinja2_view as view, static_file)
+from bottle import (request, get, post, run, jinja2_view as view, static_file,
+                    TEMPLATE_PATH, BaseTemplate)
 from config import config
 
-c = config()
-c.bottleSetup()
 
 # get logger
 logger = logging.getLogger(__name__)
 
+# bottle setup
+TEMPLATE_PATH.append(config['viewDir'])
+logger.debug("added view dir")
+
+# add view extension (jinja 2 files)
+BaseTemplate.extensions.append("jinja")
+logger.debug("added jinja file extention")
 
 ### CONTROLLERS ###
 
@@ -17,7 +23,7 @@ logger = logging.getLogger(__name__)
 # static files
 @get('/static/<filepath:path>')
 def server_static(filepath):
-    return static_file(filepath, root=c.staticdir)
+    return static_file(filepath, root=config['staticdir'])
 
 
 # home page
