@@ -1,17 +1,24 @@
 from util import form2json
-from setup import staticdir
 from shoppersherpa.api.api import query
 from shoppersherpa import logging
-from bottle import (request, get, post, run, jinja2_view as view,static_file)
+from bottle import (request, get, post, run, jinja2_view as view, static_file)
+from config import config
 
+c = config()
+c.bottleSetup()
+
+# get logger
 logger = logging.getLogger(__name__)
 
+
 ### CONTROLLERS ###
+
 
 # static files
 @get('/static/<filepath:path>')
 def server_static(filepath):
-    return static_file(filepath, root=staticdir)
+    return static_file(filepath, root=c.staticdir)
+
 
 # home page
 @get('/')
@@ -19,13 +26,16 @@ def server_static(filepath):
 def index():
     return dict()
 
+
 # keyword search from home page
 @post('/search')
 #   @view('search.html')
 def search():
     return query(form2json(request.forms))
 
+
 ### RUN ###
+
 
 # code to start test server
 def start():
