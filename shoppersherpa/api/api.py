@@ -9,6 +9,7 @@ logger = logging.getLogger(__name__)
 
 #TODO: how do I deal with debug logging in doctests?
 
+
 def parseJson(jsonString):
     """ Parses a json String and logs an error on failure.
 
@@ -67,18 +68,19 @@ def query(jsonString):
 
     Example input:
 
-    {"keywords":"600Hz 1080p used Plasma HDTV",
-    "attributes":["size"],
-    "filters":[{"attribute":"brand",
-                "type":"include",
-                "value":["Sony","Toshiba"]},
-               {"attribute":"size",
-                "type":"range",
-                "value":[6,null]}]}
+    '{"keywords":"600Hz 1080p used Plasma HDTV",\
+    "attributes":["size"],\
+    "filters":[{"attribute":"brand",\
+                "type":"include",\
+                "value":["Sony","Toshiba"]},\
+               {"attribute":"size",\
+                "type":"range",\
+                "value":[6,null]}]}'
 
     """
 
     # decode json
+    # Product.objects.select_related()
     jsonQuery = parseJson(jsonString)
 
     # ensure we passed in keywords
@@ -102,6 +104,8 @@ def query(jsonString):
         products = products.filter(**d)
     else:
         logger.info("No filters in query json: %s", jsonQuery)
+
+        products = [p for p in products]
 
     selected_attrs = ['size']
     if 'attributes' in jsonQuery:
@@ -133,12 +137,16 @@ def query(jsonString):
             val_json['stats'] = []
 
             for dep in dep_attrs:
+                filtered = docSetFilter(products, ai.name, val, dep)
+                if len(filtered) == 0:
+                    continue
+
                 dep_json = {}
                 val_json['stats'].append(dep_json)
                 dep_json['name'] = dep
-                dep_json['mean'] = attrValMean(ai.name, val, dep, products)
-                dep_json['median'] = attrValMedian(ai.name, val, dep, products)
-                dep_json['stdDev'] = attrValStd(ai.name, val, dep, products)
+                dep_json['mean'] = docSetMean(filtered, dep)
+                dep_json['median'] = docSetMedian(filtered, dep)
+                dep_json['stdDev'] = docSetStd(filtered, dep)
 
     for prod in products:
         prod_json = {}
@@ -147,11 +155,46 @@ def query(jsonString):
             if at in prod.normalized:
                 prod_json[at] = prod.normalized[at]
 
+    print "done"
     return response_json
+
+
+"""
+    # get attribute data
+        attributeData = []
+
+    # get selected attributes
+        selectedAttributes = []
+
+    # get raw product data
+        productData = []
+
+    # get top products
+        exampleProducts = []
+
+    # combine
+        result = {}
+        result['attributes'] = attributeData
+        result['selected'] = selectedAttributes
+        result['products'] = productData
+        result['examples'] = exampleProducts
+    return result
+"""
+
+
+# get info on a single product
+def product(jsonString):
+    # decode json
+    jsonQuery = parseJson(jsonString)
+    results = Product.objects.filter(**jsonQuery)
+    if len(results) == 0:
+        return None
+    return results[0]
+
 
 if __name__ == "__main__":
     import doctest
-    xxxx = query('''{"keywords":"600Hz 1080p used Plasma HDTV",
+    xxx = query('''{"keywords":"600Hz 1080p used Plasma HDTV",
     "attributes":["size"],
     "filters":[{"attribute":"brand",
                 "type":"include",
@@ -159,6 +202,5 @@ if __name__ == "__main__":
                {"attribute":"size",
                 "type":"range",
                 "value":[6,null]}]}''')
-    
-    
+
     #doctest.testmod()

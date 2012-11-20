@@ -1,7 +1,18 @@
-Projection TV Prices
+{% extends "base.html.jinja" %}
 
-<ul>
-{% for product in products %}
-  <li>{{product.attr.regularPrice}}</li>
-{% endfor %}
-</ul>
+{% block content %}
+
+    <div class="logoHolder">
+        <div class="left line"></div>
+        <div class="top line"></div>
+        <div class="right line"></div>
+        <div class="bottom line"></div>
+
+        <h1>verrne.</h1>
+    </div>
+    <form id="query" action="/search" method="POST">
+        <div id="mainInput">
+            <input name="keywords" placeholder="product search"><span class="link submit">&rarr;</span>
+        </div>
+    </form>
+{% endblock %}

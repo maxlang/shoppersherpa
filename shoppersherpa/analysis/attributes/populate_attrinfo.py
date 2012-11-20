@@ -18,6 +18,7 @@ if __name__ == "__main__":
     size_ai = AttrInfo()
     size_ai.name = "size"
     size_ai.display_name = "Screen Size"
+    size_ai.help_text = "Blah blah blah Screen Size"
     size_ai.is_discrete = False
     size_ai.is_independant = True
     size_ai.rank = 1
@@ -26,6 +27,7 @@ if __name__ == "__main__":
     brand_ai = AttrInfo()
     brand_ai.name = "brand"
     brand_ai.display_name = "Brand"
+    brand_ai.help_text = "Blah blah blah Screen Size"
     brand_ai.is_discrete = True
     brand_ai.is_independant = True
     brand_ai.rank = 2
@@ -34,6 +36,7 @@ if __name__ == "__main__":
     tv_type_ai = AttrInfo()
     tv_type_ai.name = "tv_type"
     tv_type_ai.display_name = "Television Type"
+    tv_type_ai.help_text = "Blah blah blah Screen Size"
     tv_type_ai.is_discrete = True
     tv_type_ai.is_independant = True
     tv_type_ai.rank = 3
@@ -42,6 +45,7 @@ if __name__ == "__main__":
     res_ai = AttrInfo()
     res_ai.name = "resolution"
     res_ai.display_name = "Resolution"
+    res_ai.help_text = "Blah blah blah Screen Size"
     res_ai.is_discrete = True
     res_ai.is_independant = True
     res_ai.rank = 4
@@ -50,6 +54,7 @@ if __name__ == "__main__":
     refresh_ai = AttrInfo()
     refresh_ai.name = "refresh"
     refresh_ai.display_name = "Refresh Rate"
+    refresh_ai.help_text = "Blah blah blah Screen Size"
     refresh_ai.is_discrete = True
     refresh_ai.is_independant = True
     refresh_ai.rank = 5
@@ -58,6 +63,7 @@ if __name__ == "__main__":
     is_3d_ai = AttrInfo()
     is_3d_ai.name = "is_3d"
     is_3d_ai.display_name = "Supports 3D"
+    is_3d_ai.help_text = "Blah blah blah Screen Size"
     is_3d_ai.is_discrete = True
     is_3d_ai.is_independant = True
     is_3d_ai.rank = 6
@@ -66,6 +72,7 @@ if __name__ == "__main__":
     color_ai = AttrInfo()
     color_ai.name = "color"
     color_ai.display_name = "Color"
+    color_ai.help_text = "Blah blah blah Screen Size"
     color_ai.is_discrete = True
     color_ai.is_independant = True
     color_ai.units = None
@@ -74,6 +81,7 @@ if __name__ == "__main__":
     num_rating_ai = AttrInfo()
     num_rating_ai.name = "ratings_num"
     num_rating_ai.display_name = "Number of Ratings"
+    num_rating_ai.help_text = "Blah blah blah Screen Size"
     num_rating_ai.is_discrete = False
     num_rating_ai.is_independant = False
     num_rating_ai.units = None
@@ -82,6 +90,7 @@ if __name__ == "__main__":
     avg_rating_ai = AttrInfo()
     avg_rating_ai.name = "ratings_avg"
     avg_rating_ai.display_name = "Average Ratings"
+    avg_rating_ai.help_text = "Blah blah blah Screen Size"
     avg_rating_ai.is_discrete = False
     avg_rating_ai.is_independant = False
     avg_rating_ai.units = None
@@ -90,11 +99,11 @@ if __name__ == "__main__":
     price_ai = AttrInfo()
     price_ai.name = "price"
     price_ai.display_name = "Price"
+    price_ai.help_text = "Blah blah blah Screen Size"
     price_ai.is_discrete = False
     price_ai.is_independant = False
     price_ai.units = None
     price_ai.rank = None
-
 
     ai_elements = [(size_ai, lambda x: fallbackNormalize(x, ['screenSizeIn', 'screenSizeClassIn'])),
                    (brand_ai, lambda x: fallbackNormalize(x, ['manufacturer'])),
