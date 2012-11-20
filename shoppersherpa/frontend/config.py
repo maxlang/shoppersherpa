@@ -33,10 +33,10 @@ class Config(collections.Mapping):
         # we can change config to a MutableMapping and set computed config
         # values on a global instance
         # that said, some config will have to be per request - eg for flighting
-        self['viewDir'] = os.path.join(curDir, self['viewDirName'])
+        self.config['viewDir'] = os.path.join(curDir, self['viewDirName'])
         logger.debug("view dir: %s", self['viewDir'])
 
-        self['staticDir'] = os.path.join(curDir, self['staticDirName'])
+        self.config['staticDir'] = os.path.join(curDir, self['staticDirName'])
         logger.debug("static dir: %s", self['staticDir'])
 
     def __len__(self):
