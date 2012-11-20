@@ -1,6 +1,7 @@
 import json
 from shoppersherpa import logging
-from shoppersherpa.models.models import Product
+from shoppersherpa.models.models import Product, AttrInfo
+from shoppersherpa.analysis.calcstats import *
 from filters import FilterMerger
 
 #TODO: move logs to a centralized location, make log level configurable
@@ -82,7 +83,7 @@ def query(jsonString):
 
     # ensure we passed in keywords
     if 'keywords' not in jsonQuery:
-        logger.error("No keywords in query json: %s",jsonQuery)
+        logger.error("No keywords in query json: %s", jsonQuery)
         raise ValueError("Expecting json with keywords attribute")
 
     # TODO: enable keywords - get a set of products based on the keywords
@@ -91,25 +92,73 @@ def query(jsonString):
 
     # TODO: should this stuff happen in the API? Or in helper functions?
     if 'filters' in jsonQuery:
+        merger = FilterMerger()
+
         for f in jsonQuery['filters']:
-            FilterMerger.add(f)
+            merger.add(f)
 
         # filter the products based on the filters
-        d = FilterMerger.merge()
+        d = merger.merge()
         products = products.filter(**d)
     else:
         logger.info("No filters in query json: %s", jsonQuery)
 
-    # get attribute data
+    selected_attrs = ['size']
+    if 'attributes' in jsonQuery:
+        selected_attrs = jsonQuery['attributes']
 
-    # get selected attributes
+    dep_attrs = ['price', 'ratings_avg']
 
-    # get raw product data
+    response_json = {'attrs': [],
+                     'selectedAttrs': selected_attrs,
+                     'rawData': [],
+                     'topProducts': []}
 
-    # get top products
+    for ai in AttrInfo.objects.filter(**{'is_independant': True}):
+        ai_json = {}
+        response_json['attrs'].append(ai_json)
+        ai_json['name'] = ai.name
+        ai_json['displayName'] = ai.display_name
+        ai_json['helpText'] = ai.help_text
+        ai_json['rank'] = ai.rank
+        ai_json['isDiscrete'] = ai.is_discrete
+        ai_json['units'] = ai.units
+        ai_json['options'] = []
 
-    # combine
+        for val in ai.values:
+            val_json = {}
+            ai_json['options'].append(val_json)
+            val_json['value'] = val
+            val_json['count'] = attrValDepCount(ai.name, val, None, products)
+            val_json['stats'] = []
+
+            for dep in dep_attrs:
+                dep_json = {}
+                val_json['stats'].append(dep_json)
+                dep_json['name'] = dep
+                dep_json['mean'] = attrValMean(ai.name, val, dep, products)
+                dep_json['median'] = attrValMedian(ai.name, val, dep, products)
+                dep_json['stdDev'] = attrValStd(ai.name, val, dep, products)
+
+    for prod in products:
+        prod_json = {}
+        response_json['rawData'].append(prod_json)
+        for at in selected_attrs + dep_attrs:
+            if at in prod.normalized:
+                prod_json[at] = prod.normalized[at]
+
+    return response_json
 
 if __name__ == "__main__":
     import doctest
-    doctest.testmod()
+    xxxx = query('''{"keywords":"600Hz 1080p used Plasma HDTV",
+    "attributes":["size"],
+    "filters":[{"attribute":"brand",
+                "type":"include",
+                "value":["Sony","Toshiba"]},
+               {"attribute":"size",
+                "type":"range",
+                "value":[6,null]}]}''')
+    
+    
+    #doctest.testmod()

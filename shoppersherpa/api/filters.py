@@ -42,11 +42,14 @@ class Filter(object):
 
     """
 
-
     def __init__(self, filterDict):
         """Expects a dictionary with attribute, type, and value"""
         self.attribute = filterDict['attribute']
         self.type = filterDict['type']
+
+        self.min = None
+        self.max = None
+
         value = filterDict['value']
         if (not self.attribute
                or self.type not in ('include','exclude','range')
