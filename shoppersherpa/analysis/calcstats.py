@@ -39,7 +39,7 @@ def getArrayForAttrVal(indep, val, dep, doc_set=None, min_ratings=None):
 '''
 
 
-def docSetFilter(doc_set, indep, val=None, dep=None):
+def docSetFilter(doc_set, indep=None, val=None, dep=None):
     cur = doc_set
     if doc_set is None:
         cur = Product.objects

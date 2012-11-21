@@ -61,6 +61,7 @@ class UOMAttr(ValueAttr):
 class AttrInfo(DynamicDocument):
     name = StringField()
     display_name = StringField()
+    help_text = StringField()
     rank = IntField()
     is_discrete = BooleanField()
     is_independant = BooleanField()

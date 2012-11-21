@@ -105,7 +105,7 @@ def query(jsonString):
     else:
         logger.info("No filters in query json: %s", jsonQuery)
 
-        products = [p for p in products]
+    products = [p for p in products]
 
     selected_attrs = ['size']
     if 'attributes' in jsonQuery:
@@ -130,27 +130,34 @@ def query(jsonString):
         ai_json['options'] = []
 
         for val in ai.values:
+            val_filtered = docSetFilter(products, ai.name, val, None)
+            if len(val_filtered) == 0:
+                continue
+
             val_json = {}
             ai_json['options'].append(val_json)
             val_json['value'] = val
-            val_json['count'] = attrValDepCount(ai.name, val, None, products)
+            val_json['count'] = len(val_filtered)
             val_json['stats'] = []
 
             for dep in dep_attrs:
-                filtered = docSetFilter(products, ai.name, val, dep)
-                if len(filtered) == 0:
+                dep_filtered = docSetFilter(val_filtered, None, None, dep)
+                if len(dep_filtered) == 0:
                     continue
+
+                vector = docSetToVector(val_filtered, None, None, dep)
 
                 dep_json = {}
                 val_json['stats'].append(dep_json)
                 dep_json['name'] = dep
-                dep_json['mean'] = docSetMean(filtered, dep)
-                dep_json['median'] = docSetMedian(filtered, dep)
-                dep_json['stdDev'] = docSetStd(filtered, dep)
+                dep_json['mean'] = numpy.mean(vector)
+                dep_json['median'] = numpy.median(vector)
+                dep_json['stdDev'] = numpy.std(vector)
 
     for prod in products:
         prod_json = {}
         response_json['rawData'].append(prod_json)
+        prod_json['id'] = str(prod.id)
         for at in selected_attrs + dep_attrs:
             if at in prod.normalized:
                 prod_json[at] = prod.normalized[at]
@@ -194,13 +201,15 @@ def product(jsonString):
 
 if __name__ == "__main__":
     import doctest
-    xxx = query('''{"keywords":"600Hz 1080p used Plasma HDTV",
-    "attributes":["size"],
-    "filters":[{"attribute":"brand",
-                "type":"include",
-                "value":["Sony","Toshiba"]},
-               {"attribute":"size",
-                "type":"range",
-                "value":[6,null]}]}''')
+    #xxx = query('''{"keywords":"600Hz 1080p used Plasma HDTV",
+    #"attributes":["size"],
+    #"filters":[{"attribute":"brand",
+    #            "type":"include",
+    #            "value":["Sony","Toshiba"]},
+    #           {"attribute":"size",
+    #            "type":"range",
+    #            "value":[6,null]}]}''')
+
+    xxx = query('{"keywords":"600Hz 1080p used Plasma HDTV"}')
 
     #doctest.testmod()

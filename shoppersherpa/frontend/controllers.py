@@ -23,7 +23,7 @@ logger.debug("added jinja file extention")
 # static files
 @get('/static/<filepath:path>')
 def server_static(filepath):
-    return static_file(filepath, root=config['staticdir'])
+    return static_file(filepath, root=config['staticDir'])
 
 
 # home page
