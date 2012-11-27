@@ -96,5 +96,13 @@ def attrValDepCount(indep, val=None, dep=None, doc_set=None):
     len(docSetFilter(doc_set, indep, val, dep))
 
 
+def bucketByPercentile(doc_set, feature, num_buckets):
+    sorted_list = filter(lambda x: x.normalized[feature] is not None,
+                         sorted(doc_set, key=lambda x: x.normalized[feature]))
+    bucket_size = float(len(sorted_list) / num_buckets)
+    return [sorted_list[(int(x * bucket_size)):(int((x + 1) * bucket_size))]
+            for x in range(num_buckets)]
+
+
 if __name__ == "__main__":
     attrValMean('tv_type', 'Projection', 'price')
