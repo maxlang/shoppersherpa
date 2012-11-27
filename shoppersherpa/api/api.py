@@ -45,6 +45,53 @@ def parseJson(jsonString):
     return jsonQuery
 
 
+def argmax(iterable, func, mult=1):
+    best = None
+    best_val = None
+    for x in iterable:
+        val = func(x)
+        if best is None or val > best_val:
+            best_val = val
+            best = x
+    return best
+
+
+def argmaxTake(iterable, feature, num, mult=1):
+    result = []
+    for x in iterable:
+        pos = 0
+        while pos < len(result) and pos < num and result[pos].normalized[feature] < x.normalized[feature]:
+            pos = pos + 1
+        if pos < num:
+            result.insert(pos, x)
+    if len(result) <= num:
+        return result
+    else:
+        return result[:num]
+
+
+def getTopProducts(doc_set, feature, dep_feature, num_products):
+    ai = AttrInfo.lookup(feature)
+    if ai is None:
+        raise Exception("unknown feature: {0}".format(feature))
+
+    mult = 1
+    if ai.name == "price":
+        mult = -1
+
+    if not ai.is_discrete:
+        buckets = bucketByPercentile(doc_set, feature, num_products)
+        return filter(lambda x: x is not None,
+                      [argmax(b, lambda x: x.normalized[dep_feature], mult) for b in buckets])
+
+    else:
+        bucketed = [filter(lambda x: x.normalized[feature] == v, doc_set) for v in ai.values]
+        prods = [argmax(b, lambda x: x.normalized[dep_feature], mult) for b in bucketed]
+
+        prods = filter(lambda x: x is not None, prods)
+        return argmaxTake(prods, dep_feature, num_products, mult)
+
+
 """
 expects json in the following format:
 
@@ -162,6 +209,9 @@ def query(jsonString):
             if at in prod.normalized:
                 prod_json[at] = prod.normalized[at]
 
+    if len(selected_attrs) > 0:
+        response_json['topProducts'] = getTopProducts(products, selected_attrs[0], 'price', 5)
+
     print "done"
     return response_json
 
@@ -201,15 +251,15 @@ def product(jsonString):
 
 if __name__ == "__main__":
     import doctest
-    #xxx = query('''{"keywords":"600Hz 1080p used Plasma HDTV",
-    #"attributes":["size"],
-    #"filters":[{"attribute":"brand",
-    #            "type":"include",
-    #            "value":["Sony","Toshiba"]},
-    #           {"attribute":"size",
-    #            "type":"range",
-    #            "value":[6,null]}]}''')
+    xxx = query('''{"keywords":"600Hz 1080p used Plasma HDTV",
+    "attributes":["size", "refresh"],
+    "filters":[{"attribute":"brand",
+                "type":"include",
+                "value":["Sony","Toshiba"]},
+               {"attribute":"size",
+                "type":"range",
+                "value":[6,null]}]}''')
 
-    xxx = query('{"keywords":"600Hz 1080p used Plasma HDTV"}')
-
+    #xxx = query('{"keywords":"600Hz 1080p used Plasma HDTV"}')
+    pass
     #doctest.testmod()

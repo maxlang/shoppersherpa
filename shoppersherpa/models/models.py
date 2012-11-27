@@ -72,7 +72,16 @@ class AttrInfo(DynamicDocument):
     def __unicode__(self):
         return "{0}) {1}: {2} {3}".format(self.rank,
                                           self.display_name,
-                                          self.values,self.units)
+                                          self.values,
+                                          self.units)
+
+    @staticmethod
+    def lookup(name):
+        ais = [x for x in AttrInfo.objects.filter(**{'name': name})]
+        if len(ais) != 1:
+            return None
+        else:
+            return ais[0]
 
 
 class DateTimeAttr(ValueAttr):
