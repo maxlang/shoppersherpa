@@ -1,3 +1,9 @@
+* {
+    margin:0px;
+    border:0px;
+    padding:0px;
+}
+
 body {
     background-color:#F9F9F9;
 }
@@ -109,39 +115,46 @@ div#mainInput {
 
 /**** DEBUG RECTANGLES ***/
 
-div.debug * {
-    border: solid 1px;
-    margin: -1px;
-}
+
 
 /* Search Page */
 
 html,body,div#content {
     height: 100%;
-    margin:0px;
-    border:0px;
-    padding:0px;
+    width: 100%;
+    min-width:1750px;
+    min-height:600px;
 }
 
-* {
-    margin:0px;
-    border:0px;
-    padding:0px;
-}
+/*** Layout ***/
 
 div#topBar {
-    height:30%;
-    min-width:150px;
+    height:25%;
+    width:100%;
+    min-height:150px;
+    min-width:300px;
 }
+
+
 
 div#rightBar {
     width:20%;
     float:right;
-    height:70%;
+    height:75%;
+    min-height:450px;
+    min-width:350px;
 }
 
 div#graphArea {
-    height:70%;
+    height:75%;
     width:80%;
     float:left;
+    min-height:450px;
+    min-width:1400px;
+}
+
+/*** Top bar ***/
+
+#topBar div#mainInput {
+    margin: 0px 0px;
 }

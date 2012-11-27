@@ -1,7 +1,15 @@
 {% extends "base.html.jinja" %}
 
 {% block content %}
-<div id="topBar">topBar</div>
+<div id="topBar">
+    <form id="query" action="/search" method="POST">
+        <div id="mainInput">
+            {# TODO: there must be a better way to strip whitespace #}
+            <input name="keywords" placeholder="product search" value="{{keywords}}" /><span class="link submit">&rarr;</span>
+        </div>
+    </form>
+</div>
 <div id="graphArea">graph</div>
+
 <div id="rightBar">rightbar</div>
 {% endblock %}

@@ -40,8 +40,10 @@ def index():
 @post('/search')
 @view('search.html')
 def search():
-    return dict()
-    #return query(form2json(request.forms))
+    return dict(request.forms)
+    #return dict(list(query(form2json(request.forms)).items())
+    #            + list(request.forms.items()))
+
 
 ### RUN ###
 

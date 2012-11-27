@@ -210,7 +210,9 @@ def query(jsonString):
                 prod_json[at] = prod.normalized[at]
 
     if len(selected_attrs) > 0:
-        response_json['topProducts'] = getTopProducts(products, selected_attrs[0], 'price', 5)
+        response_json['topProducts'] = \
+        [dict(p.normalized.copy(),id=str(p.id))
+         for p in getTopProducts(products, selected_attrs[0], 'price', 5)]
 
     print "done"
     return response_json
