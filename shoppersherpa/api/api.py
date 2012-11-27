@@ -105,7 +105,7 @@ def query(jsonString):
     else:
         logger.info("No filters in query json: %s", jsonQuery)
 
-        products = [p for p in products]
+    products = [p for p in products]
 
     selected_attrs = ['size']
     if 'attributes' in jsonQuery:

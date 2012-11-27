@@ -3,8 +3,11 @@ from shoppersherpa.api.api import query
 from shoppersherpa import logging
 from bottle import (request, get, post, run, jinja2_view as view, static_file,
                     TEMPLATE_PATH, BaseTemplate)
-from config import config
+from config import Config
 
+### CONFIG ###
+global config
+config = Config()
 
 # get logger
 logger = logging.getLogger(__name__)
@@ -23,7 +26,7 @@ logger.debug("added jinja file extention")
 # static files
 @get('/static/<filepath:path>')
 def server_static(filepath):
-    return static_file(filepath, root=config['staticdir'])
+    return static_file(filepath, root=config['staticDir'])
 
 
 # home page
@@ -35,17 +38,20 @@ def index():
 
 # keyword search from home page
 @post('/search')
-#   @view('search.html')
+@view('search.html')
 def search():
-    return query(form2json(request.forms))
-
+    return dict()
+    #return query(form2json(request.forms))
 
 ### RUN ###
 
-
 # code to start test server
-def start():
-    run(host='localhost', port=8080, debug=True)
+def start(reload=False):
+    #TODO - there ought to be a better way to do this than using globals
+    # perhaps using app.config or bottle.config or something
+    global config
+    config = Config(debug=True)
+    run(host='localhost', port=8080, debug=True,reloader=reload)
 
 if __name__ == "__main__":
     start()

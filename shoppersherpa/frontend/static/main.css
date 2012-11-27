@@ -93,28 +93,55 @@ div#mainInput {
     position:relative;
 }
 
-/**** LINK TYPOGRAPHY - stolen from Hans ***/
+/**** LINK TYPOGRAPHY - no longer stolen :P ***/
 
-a:hover,
-a:focus,
+.link {
+    color:black;
+}
+
 .link:hover,
 .link:focus,
-button:hover,
-button:focus {
-/*  color:#a00; */
-  text-decoration:underline;
+.link:active
+ {
+    color:red;
+    cursor:pointer;
 }
-a:active,
-.link:active,
-button:active {
-/*  color:#800; */
+
+/**** DEBUG RECTANGLES ***/
+
+div.debug * {
+    border: solid 1px;
+    margin: -1px;
 }
-a,
-.link,
-button,
-button.disabled,
-.primary-cta {
-/*  color:#c50000; */
-  text-decoration:none;
-  cursor:pointer;
+
+/* Search Page */
+
+html,body,div#content {
+    height: 100%;
+    margin:0px;
+    border:0px;
+    padding:0px;
+}
+
+* {
+    margin:0px;
+    border:0px;
+    padding:0px;
+}
+
+div#topBar {
+    height:30%;
+    min-width:150px;
+}
+
+div#rightBar {
+    width:20%;
+    float:right;
+    height:70%;
+}
+
+div#graphArea {
+    height:70%;
+    width:80%;
+    float:left;
 }
