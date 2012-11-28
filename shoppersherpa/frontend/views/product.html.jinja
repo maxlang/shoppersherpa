@@ -1,0 +1,10 @@
+<div class="product">
+    <img src="{{product.imgSrc}}" title="{{product.name|e}}" />
+    {# TODO: change from $$ default #}
+    <div class="price">${{product.price|round|int}}</div>
+    <div class="attr">
+        {% for attr in selectedAttrs %}
+            {{product[attr]|round|int}} {{attrs[attr].units}}
+        {% endfor %}
+    </div>
+</div>

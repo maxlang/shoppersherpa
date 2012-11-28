@@ -160,14 +160,14 @@ def query(jsonString):
 
     dep_attrs = ['price', 'ratings_avg']
 
-    response_json = {'attrs': [],
+    response_json = {'attrs': {},
                      'selectedAttrs': selected_attrs,
                      'rawData': [],
                      'topProducts': []}
 
     for ai in AttrInfo.objects.filter(**{'is_independant': True}):
         ai_json = {}
-        response_json['attrs'].append(ai_json)
+        response_json['attrs'][ai.name]=ai_json
         ai_json['name'] = ai.name
         ai_json['displayName'] = ai.display_name
         ai_json['helpText'] = ai.help_text
@@ -185,7 +185,7 @@ def query(jsonString):
             ai_json['options'].append(val_json)
             val_json['value'] = val
             val_json['count'] = len(val_filtered)
-            val_json['stats'] = []
+            val_json['stats'] = {}
 
             for dep in dep_attrs:
                 dep_filtered = docSetFilter(val_filtered, None, None, dep)
@@ -195,7 +195,7 @@ def query(jsonString):
                 vector = docSetToVector(val_filtered, None, None, dep)
 
                 dep_json = {}
-                val_json['stats'].append(dep_json)
+                val_json['stats'][dep]=dep_json
                 dep_json['name'] = dep
                 dep_json['mean'] = numpy.mean(vector)
                 dep_json['median'] = numpy.median(vector)
@@ -211,7 +211,7 @@ def query(jsonString):
 
     if len(selected_attrs) > 0:
         response_json['topProducts'] = \
-        [dict(p.normalized.copy(),id=str(p.id))
+        [dict(p.normalized.copy(),id=str(p.id),imgSrc=p.attr['image'],name=p.attr['name'])
          for p in getTopProducts(products, selected_attrs[0], 'price', 5)]
 
     print "done"
@@ -261,7 +261,7 @@ if __name__ == "__main__":
                {"attribute":"size",
                 "type":"range",
                 "value":[6,null]}]}''')
-
+    yyy = query('''{"keywords":"televisions"}''')
     #xxx = query('{"keywords":"600Hz 1080p used Plasma HDTV"}')
     pass
     #doctest.testmod()

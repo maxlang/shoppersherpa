@@ -158,3 +158,36 @@ div#graphArea {
 #topBar div#mainInput {
     margin: 0px 0px;
 }
+
+/*** Prodcut Bar ***/
+
+#rightBar h1 {
+    font-size:26px;
+    margin-bottom:15px;
+}
+
+/* Product */
+
+#rightBar .product {
+    height:120px;
+}
+
+#rightBar .product img {
+    float:left;
+    height:100px;
+    max-width:200px;
+    margin-right:20px;
+}
+
+#rightBar .product .price,
+#rightBar .product .attr {
+    font-size: 40px;
+    font-weight: bold;
+    font-family: sans-serif;
+}
+
+/*** Graph Area ***/
+
+#graphArea h1 {
+    font-size:26px;
+}

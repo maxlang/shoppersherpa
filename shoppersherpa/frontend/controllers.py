@@ -4,6 +4,7 @@ from shoppersherpa import logging
 from bottle import (request, get, post, run, jinja2_view as view, static_file,
                     TEMPLATE_PATH, BaseTemplate)
 from config import Config
+from jinjaCustom import jinjaSetup
 
 ### CONFIG ###
 global config
@@ -19,6 +20,9 @@ logger.debug("added view dir")
 # add view extension (jinja 2 files)
 BaseTemplate.extensions.append("jinja")
 logger.debug("added jinja file extention")
+
+# adde custom jinja functions/filters
+jinjaSetup()
 
 ### CONTROLLERS ###
 
@@ -40,10 +44,8 @@ def index():
 @post('/search')
 @view('search.html')
 def search():
-    return dict(request.forms)
-    #return dict(list(query(form2json(request.forms)).items())
-    #            + list(request.forms.items()))
-
+    return dict(list(query(form2json(request.forms)).items())
+                + list(request.forms.items()))
 
 ### RUN ###
 
