@@ -12,19 +12,7 @@
 <div id="graphArea">
     <div id="attributeTabs">
     {% for attr in attrs|values|sort(attribute='rank') %}
-        <div>
-        <h1>{{attr.displayName|capitalize}}</h1>
-        <div>Rank: {{attr.rank}}</div>
-        {% for option in attr.options|sort(attribute='count',reverse=True) %}
-            <div>{{option.value}} - {{option.count}}</div>
-            <div>Median Price:{{option.stats.price.median}}</div>
-            <div>Mean Price:{{option.stats.price.mean}}</div>
-            {% if option.stats.ratings_avg is defined %}
-                <div>Median Rating:{{option.stats.ratings_avg.median}}</div>
-                <div>Mean Rating:{{option.stats.ratings_avg.mean}}</div>
-            {% endif %}
-        {% endfor %}
-        <div>
+        {% include "attribute.html.jinja" %}
     {% endfor %}
     </div>
 </div>
