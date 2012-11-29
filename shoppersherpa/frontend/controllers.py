@@ -4,7 +4,7 @@ from shoppersherpa import logging
 from bottle import (request, get, post, run, jinja2_view as view, static_file,
                     TEMPLATE_PATH, BaseTemplate)
 from config import Config
-from jinjaCustom import jinjaSetup
+from jinjaSetup import jinjaSetup
 
 ### CONFIG ###
 global config
@@ -44,8 +44,22 @@ def index():
 @post('/search')
 @view('search.html')
 def search():
-    return dict(list(query(form2json(request.forms)).items())
-                + list(request.forms.items()))
+    jsonQuery = form2json(request.forms)
+    """
+    jsonQuery = '''{"keywords":"600Hz 1080p used Plasma HDTV",
+    "attributes":["size", "refresh"],
+    "filters":[{"attribute":"brand",
+                "type":"include",
+                "value":["Sony","Toshiba"]},
+               {"attribute":"size",
+                "type":"range",
+                "value":[6,null]}]}'''
+    """
+    queryResult = query(jsonQuery)
+
+    #return the form input and the query result
+    return dict(list(queryResult.items()) +
+                list(request.forms.items()))
 
 ### RUN ###
 

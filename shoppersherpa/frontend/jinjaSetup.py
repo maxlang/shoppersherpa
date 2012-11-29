@@ -30,3 +30,6 @@ def jinjaSetup():
     filters['sortedkeys'] = sortedkeys
     filters['sortedvalues'] = sortedvalues
     filters['values'] = values
+
+    Jinja2Template.settings['extensions'] = ['jinja2.ext.loopcontrols']
+

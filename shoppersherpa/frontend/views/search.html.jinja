@@ -11,8 +11,10 @@
 </div>
 <div id="graphArea">
     <div id="attributeTabs">
-    {% for attr in attrs|values|sort(attribute='rank') %}
-        {% include "attribute.html.jinja" %}
+    {% for attr in attrs.values()|sort(attribute='rank') if attr.options|count > 0 %}
+        {% if loop.index <= 5 %}
+            {% include "attribute.html.jinja" %}
+        {% endif %}
     {% endfor %}
     </div>
 </div>

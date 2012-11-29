@@ -24,8 +24,9 @@ h1 {
     display:block;
 }
 
-
-input,input:active,input:focus {
+#mainInput input,
+#mainInput input:active,
+#mainInput input:focus {
     width:449px;
     border:0px;
 /*
@@ -129,9 +130,9 @@ html,body,div#content {
 /*** Layout ***/
 
 div#topBar {
-    height:25%;
+    height:15%;
     width:100%;
-    min-height:150px;
+    min-height:100px;
     min-width:300px;
 }
 
@@ -169,7 +170,7 @@ div#graphArea {
 /* Product */
 
 #rightBar .product {
-    height:120px;
+    height:150px;
 }
 
 #rightBar .product img {
@@ -190,4 +191,56 @@ div#graphArea {
 
 #graphArea h1 {
     font-size:26px;
+}
+
+/* Attribute Tabs */
+
+#attributeTabs .filter div.checkbox,
+#attributeTabs .filter div.tick
+{
+    float:left;
+    font-size:12px;
+    font-weight:bold;
+    font-family:sans-serif;
+    width:46px;
+    margin:2px;
+    background-color:yellow;
+}
+
+#attributeTabs .filter div.tick {
+    width:16px;
+}
+
+#attributeTabs .filter input[type='range'] {
+    width:150px;
+    display:block;
+}
+
+div.filter {
+    float: left;
+    margin: 0px;
+    border: 1px solid;
+    border-bottom: none;
+    height: 100px;
+    box-shadow: 1px -3px 6px black;
+    border-radius: 10px;
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 0px;
+    padding:10px;
+    position:relative;
+    width:250px;
+}
+
+div.filter div.inputs {
+    position:absolute;
+    bottom:0px;
+}
+
+#attributeTabs {
+    margin:40px;
+    float:right;
+}
+
+div.noOptions {
+    padding-top:50px;
 }

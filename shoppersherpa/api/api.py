@@ -195,7 +195,7 @@ def query(jsonString):
                 vector = docSetToVector(val_filtered, None, None, dep)
 
                 dep_json = {}
-                val_json['stats'][dep]=dep_json
+                val_json['stats'][dep] = dep_json
                 dep_json['name'] = dep
                 dep_json['mean'] = numpy.mean(vector)
                 dep_json['median'] = numpy.median(vector)
