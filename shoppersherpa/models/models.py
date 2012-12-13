@@ -9,6 +9,9 @@ from mongoengine import (
     DateTimeField, URLField, EmbeddedDocument, EmbeddedDocumentField,
     BooleanField, DynamicDocument,connect)
 
+#TODO: make mongoengine models so you can reference dict elts like attributes
+# like bottle configdict
+
 #TODO: move away from models
 #TODO: make db configurable
 connect('test')

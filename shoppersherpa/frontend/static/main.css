@@ -238,7 +238,8 @@ div.filter div.inputs {
 
 #attributeTabs {
     margin:40px;
-    float:right;
+    float:left;
+    width:300px;
 }
 
 div.noOptions {

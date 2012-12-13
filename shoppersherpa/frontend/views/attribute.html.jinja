@@ -1,5 +1,3 @@
-{% set barHeight = 80 %}
-
 <div class="filter">
     <h1>{{attr.displayName|capitalize}}</h1>
     <form id="{{attr.name}}" action="/filter" method="POST">
@@ -9,10 +7,10 @@
                 {% set most = options[0].count|round|int %}
                 {% for option in options if options.count > 0 %}
                     {% if loop.index <= 5 %}
-                        <div class="checkbox" style="height:{{((option.count/most)*barHeight)|round}}px;"
+                        <div class="checkbox"
                                 title="Average price: {{option.stats.price.mean|round}}{{", Average rating: " ~ option.stats.ratings_avg.mean|round(1) if option.stats.ratings_avg}}">
                             {#<input id="{{attr.name}}{{loop.index}}" type="checkbox" name="{{attr.name}}" value="{{option.value}}">#}
-                            <div for="{{attr.name}}{{loop.index}}" >{{option.value}} {{attr.units if attr.units}}</div>
+                            <div for="{{attr.name}}{{loop.index}}" ><div class="bar" style="width:{{((option.count/most)*100)|round}}%;"></div>{{option.value}} {{attr.units if attr.units}}</div>
                         </div>
                     {% endif %}
                 {% endfor %}
@@ -20,7 +18,7 @@
                 {% set options = attr.options|sort(attribute='value') %}
                 {% set max = options[-1].value|round|int %}
                 {% for option in options if options.count > 0 %}
-                    <div class="tick" style="height:{{((option.value/max)*barHeight)|round}}px;"
+                    <div class="tick" style="height:{{((option.value/max)*100)|round}}%;"
                              title="Average price: {{option.stats.price.mean|round}}{{", Average rating: " ~ option.stats.ratings_avg.mean|round(1) if option.stats.ratings_avg}}" >
                         {{option.value|round|int}}
                     </div>
