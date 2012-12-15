@@ -1,5 +1,6 @@
 from parsing import ParsedProduct
-from numpy import NaN, median,std,isnan,array,equal
+from numpy import NaN, median, std, isnan, array, equal
+from matplotlib import pyplot, cm, colors
 
 data = {}
 attrs = []
@@ -7,16 +8,10 @@ attrs = []
 for p in ParsedProduct.objects.only('normalized'):
     attrs.append(p.normalized)
 
-print 'loaded in products'
-
-
-
-from matplotlib import pyplot,cm,colors
-
-def genplots(save=False,folder="images",**kwargs):
+def genplots(save=False, folder="images", **kwargs):
     if save:
         import os
-        folder = os.path.join(os.getcwd(),folder)
+        folder = os.path.join(os.getcwd(), folder)
         if not os.path.exists(folder):
             os.mkdir(folder)
 
@@ -114,33 +109,41 @@ def genplots(save=False,folder="images",**kwargs):
                                             alpha=.1)
                     pyplot.scatter(cursizes,curprices,c=color,label=unicode(value),norm=colors.NoNorm(),**kwargs)#c=data[key+'map'],,cmap=cm.gray)
                     pyplot.gca().add_patch(rectlarge)
-                    pyplot.gca().text(max(largelims['xmin']+1,min(cursizes)+2),min(largelims['ymax']-100,max(curprices)-300),unicode(value))
+                    pyplot.gca().text(max(largelims['xmin'] + 1,
+                                          min(cursizes) + 2),
+                                      min(largelims['ymax'] - 100,
+                                          max(curprices) - 300),
+                                      unicode(value))
                     pyplot.figure(zoomname)
-                    rectzoom = pyplot.Rectangle((min(cursizes)-1,min(curprices)-10),
-                        max(cursizes)-min(cursizes)+2,
-                        max(curprices)-min(curprices)+20,
+                    rectzoom = pyplot.Rectangle((min(cursizes) - 1,
+                                                 min(curprices) - 10),
+                        max(cursizes) - min(cursizes) + 2,
+                        max(curprices) - min(curprices) + 20,
                         edgecolor=edgecolor,
                         linewidth=10,
                         facecolor=color,
                         alpha=.1)
-                    pyplot.scatter(cursizes,curprices,c=color,label=unicode(value),**kwargs)#,c=data[key+'map'],cmap=cm.gray)
+                    pyplot.scatter(cursizes,
+                                   curprices,c=color,
+                                   label=unicode(value),
+                                   **kwargs)
                     pyplot.gca().add_patch(rectzoom)
-                    pyplot.gca().text(min(cursizes)+1,min(zoomlims['ymax']-100,max(curprices)),unicode(value))
+                    pyplot.gca().text(min(cursizes)+1,min(zoomlims['ymax']-100,
+                                      max(curprices)), unicode(value))
                 else:
-                    print "rejecting key: %s and value %s" % (key,unicode(value))
+                    print "rejecting key: %s and value %s" % (key, unicode(value))
 
             pyplot.figure(largename)
             pyplot.legend()
             if save:
-                pyplot.savefig("%s/%s.png" % (folder,largename))
-
+                pyplot.savefig("%s/%s.png" % (folder, largename))
 
             pyplot.figure(zoomname)
             pyplot.legend()
 
             if save:
-                pyplot.savefig("%s/%s.png" % (folder,zoomname))
-genplots(save=False,folder="squares",s=400,cmap=cm.jet)
+                pyplot.savefig("%s/%s.png" % (folder, zoomname))
+genplots(save=False, folder="squares", s=400, cmap=cm.jet)
 pyplot.show()
 '''
 

@@ -137,7 +137,7 @@ def query(jsonString):
 
     # TODO: enable keywords - get a set of products based on the keywords
     # keywords = jsonQuery['keywords']
-    products = Product.objects
+    products = Product.objects.only("normalized", "attr.name", "attr.image")
 
     # TODO: should this stuff happen in the API? Or in helper functions?
     if 'filters' in jsonQuery:
@@ -167,7 +167,7 @@ def query(jsonString):
 
     for ai in AttrInfo.objects.filter(**{'is_independant': True}):
         ai_json = {}
-        response_json['attrs'][ai.name]=ai_json
+        response_json['attrs'][ai.name] = ai_json
         ai_json['name'] = ai.name
         ai_json['displayName'] = ai.display_name
         ai_json['helpText'] = ai.help_text

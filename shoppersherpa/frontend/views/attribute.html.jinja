@@ -1,10 +1,14 @@
+{# TODO: should I move the % display stuff to javascript? #}
+
 <div class="filter">
     <h1>{{attr.displayName|capitalize}}</h1>
     <form id="{{attr.name}}" action="/filter" method="POST">
         <div class="inputs">
             {% if attr.isDiscrete %}
                 {% set options = attr.options|sort(attribute='count',reverse=True) %}
-                {% set most = options[0].count|round|int %}
+                {#% set most = options[0].count|round|int %#}
+                {# set most to total instead of largest #}
+                {% set most = sum([o.count|round|int for o in options]) %}
                 {% for option in options if options.count > 0 %}
                     {% if loop.index <= 5 %}
                         <div class="checkbox"
@@ -18,7 +22,7 @@
                 {% set options = attr.options|sort(attribute='value') %}
                 {% set max = options[-1].value|round|int %}
                 {% for option in options if options.count > 0 %}
-                    <div class="tick" style="height:{{((option.value/max)*100)|round}}%;"
+                    <div class="tick" style="width:{{((option.value/max)*100)|round}}%;"
                              title="Average price: {{option.stats.price.mean|round}}{{", Average rating: " ~ option.stats.ratings_avg.mean|round(1) if option.stats.ratings_avg}}" >
                         {{option.value|round|int}}
                     </div>

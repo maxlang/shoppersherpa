@@ -202,9 +202,20 @@ div#graphArea {
     font-size:12px;
     font-weight:bold;
     font-family:sans-serif;
-    width:46px;
+    width:100%;
     margin:2px;
+}
+
+div.checkbox div {
+    position:relative;
+}
+
+div.checkbox div div.bar {
     background-color:yellow;
+    position:absolute;
+    height:100%;
+    left:0;
+    z-index:-1;
 }
 
 #attributeTabs .filter div.tick {
@@ -221,19 +232,18 @@ div.filter {
     margin: 0px;
     border: 1px solid;
     border-bottom: none;
-    height: 100px;
     box-shadow: 1px -3px 6px black;
     border-radius: 10px;
     border-bottom-left-radius: 0px;
     border-bottom-right-radius: 0px;
     padding:10px;
     position:relative;
-    width:250px;
+    width:200px;
+    overflow:hidden;
 }
 
 div.filter div.inputs {
-    position:absolute;
-    bottom:0px;
+
 }
 
 #attributeTabs {
