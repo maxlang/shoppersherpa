@@ -1,6 +1,6 @@
 import json
 from shoppersherpa import logging
-from shoppersherpa.models.models import Product, AttrInfo
+from shoppersherpa.models.models import AttrInfo
 from shoppersherpa.analysis.calcstats import *
 from filters import FilterMerger
 
