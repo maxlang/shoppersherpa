@@ -1,6 +1,6 @@
 import json
 from shoppersherpa import logging
-from shoppersherpa.models.models import Product, AttrInfo
+from shoppersherpa.models.models import AttrInfo
 from shoppersherpa.analysis.calcstats import *
 from filters import FilterMerger
 
@@ -49,7 +49,7 @@ def argmax(iterable, func, mult=1):
     best = None
     best_val = None
     for x in iterable:
-        val = func(x)
+        val = mult * func(x)
         if best is None or val > best_val:
             best_val = val
             best = x
@@ -166,6 +166,9 @@ def query(jsonString):
                      'topProducts': []}
 
     for ai in AttrInfo.objects.filter(**{'is_independant': True}):
+        if ai.rank < 0:
+            continue
+
         ai_json = {}
         response_json['attrs'][ai.name] = ai_json
         ai_json['name'] = ai.name
@@ -200,6 +203,8 @@ def query(jsonString):
                 dep_json['mean'] = numpy.mean(vector)
                 dep_json['median'] = numpy.median(vector)
                 dep_json['stdDev'] = numpy.std(vector)
+                dep_json['min'] = numpy.min(vector)
+                dep_json['max'] = numpy.max(vector)
 
     for prod in products:
         prod_json = {}
@@ -211,7 +216,7 @@ def query(jsonString):
 
     if len(selected_attrs) > 0:
         response_json['topProducts'] = \
-        [dict(p.normalized.copy(),id=str(p.id),imgSrc=p.attr['image'],name=p.attr['name'])
+        [dict(p.normalized.copy(), id=str(p.id), imgSrc=p.attr['image'], name=p.attr['name'])
          for p in getTopProducts(products, selected_attrs[0], 'price', 5)]
 
     print "done"
