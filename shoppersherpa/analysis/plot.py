@@ -1,122 +1,123 @@
-from parsing import ParsedProduct
+from parsing import Product
 from numpy import NaN, median,std,isnan,array,equal
 
 data = {}
 attrs = []
 
-for p in ParsedProduct.objects.only('normalized'):
+for p in Product.objects.only('normalized'):
     attrs.append(p.normalized)
 
 print 'loaded in products'
 
 
 
-from matplotlib import pyplot,cm,colors
+from matplotlib import pyplot, cm, colors
 
-def genplots(save=False,folder="images",**kwargs):
+def genplots(save=False, folder="images", **kwargs):
     if save:
         import os
-        folder = os.path.join(os.getcwd(),folder)
+        folder = os.path.join(os.getcwd(), folder)
         if not os.path.exists(folder):
             os.mkdir(folder)
 
-    for key in ['price','size', 'ratings_avg', 'brand', 'refresh','is_3d','tv_type','resolution']:
+    for key in ('price', 'size_class', 'ratings_avg', 'brand', 'refresh', 'is_3d', 'tv_type', 'resolution'):
         data[key] = []
         for a in attrs:
             try:
-                if key in ['price','size','ratings_avg','refresh']:
+                if key in ('price', 'size_class', 'ratings_avg', 'refresh'):
                     if a[key]:
                         precision = 0
                         accuracy = 1
-                        if key in ['price','refresh']:
+                        if key in ['price', 'refresh']:
                             precision = -1
-                        elif key in ['size']:
+                        elif key in ['size_class']:
                             accuracy = 2
                         elif key in ['ratings_avg']:
                             precision = 0
-                        data[key].append(round(float(a[key])/accuracy,precision)*accuracy)
+                        data[key].append(round(float(a[key]) / accuracy, precision) * accuracy)
                     else:
                         data[key].append(NaN)
                 else:
-                    if hasattr(a[key],'strip'):
-                        data[key].append(a[key].strip(u'\x99'));
+                    if hasattr(a[key], 'strip'):
+                        data[key].append(a[key].strip(u'\x99'))
                     else:
-                        data[key].append(a[key]);
+                        data[key].append(a[key])
             except KeyError:
-                print (u"Couldn't find key: %s for product with attributes: %s" % (key,a))
+                print (u"Couldn't find key: %s for product with attributes: %s" % (key, a))
         unique = sorted(list(set(data[key])))
-        data[key+"map"] = array([unique.index(item) for item in data[key]])
+        data[key + "map"] = array([unique.index(item) for item in data[key]])
         data[key] = array(data[key])
 
         largelims = None
         zoomlims = None
 
-        if 'price' in data and 'size' in data and not largelims and not zoomlims:
+        if 'price' in data and 'size_class' in data and not largelims and not zoomlims:
             xbuf = 5
             ybuf = 100
-            largelims = {'xmax':max(data['size'])+xbuf,
-                         'xmin':min(data['size'])-xbuf,
-                         'ymax':max(data['price'])+ybuf,
-                         'ymin':min(data['price'])-ybuf}
+            largelims = {'xmax':max(data['size_class']) + xbuf,
+                         'xmin':min(data['size_class']) - xbuf,
+                         'ymax':max(data['price']) + ybuf,
+                         'ymin':min(data['price']) - ybuf}
 
-            xmed = median(data['size'])
-            xsd = std(data['size'][:,~isnan(data['size'])])
+            xmed = median(data['size_class'])
+            xsd = std(data['size_class'][:, ~isnan(data['size_class'])])
             ymed = median(data['price'])
-            ysd = std(data['price'][:,~isnan(data['price'])])
-            zoomlims = {'xmax':xmed+xsd/2,
-                        'xmin':xmed-xsd/2,
-                        'ymax':ymed+ysd/2,
-                        'ymin':ymed-ysd/2}
+            ysd = std(data['price'][:, ~isnan(data['price'])])
+            zoomlims = {'xmax':xmed + xsd / 2,
+                        'xmin':xmed - xsd / 2,
+                        'ymax':ymed + ysd / 2,
+                        'ymin':ymed - ysd / 2}
 
 
-        if key not in ['price','size'] and largelims and zoomlims:
-            largename = key+"large"
-            pyplot.figure(largename, figsize=(20,15))
-            pyplot.xlim(xmax=largelims['xmax'],xmin=largelims['xmin'])
-            pyplot.ylim(ymax=largelims['ymax'],ymin=largelims['ymin'])
+        if key not in ('price', 'size_class') and largelims and zoomlims:
+            largename = key + "large"
+            pyplot.figure(largename, figsize=(20, 15))
+            pyplot.xlim(xmax=largelims['xmax'], xmin=largelims['xmin'])
+            pyplot.ylim(ymax=largelims['ymax'], ymin=largelims['ymin'])
             pyplot.title(largename)
-            zoomname = key+"zoom"
-            pyplot.figure(zoomname, figsize=(20,15))
-            pyplot.xlim(xmax=zoomlims['xmax'],xmin=zoomlims['xmin'])
-            pyplot.ylim(ymax=zoomlims['ymax'],ymin=zoomlims['ymin'])
+            zoomname = key + "zoom"
+            pyplot.figure(zoomname, figsize=(20, 15))
+            pyplot.xlim(xmax=zoomlims['xmax'], xmin=zoomlims['xmin'])
+            pyplot.ylim(ymax=zoomlims['ymax'], ymin=zoomlims['ymin'])
             pyplot.title(zoomname)
 
             #TODO: better nan handling
-            if key in ['price','size','ratings_avg','refresh']:
-                values = data[key][:,~isnan(data[key])]
-                prices = data['price'][:,~isnan(data[key])]
-                sizes = data['size'][:,~isnan(data[key])]
+            if key in ['price', 'size_class', 'ratings_avg', 'refresh']:
+                values = data[key][:, ~isnan(data[key])]
+                prices = data['price'][:, ~isnan(data[key])]
+                sizes = data['size_class'][:, ~isnan(data[key])]
             else:
-                values = data[key][:,~equal(data[key],None)]
-                prices = data['price'][:,~equal(data[key],None)]
-                sizes = data['size'][:,~equal(data[key],None)]
+                values = data[key][:, ~equal(data[key], None)]
+                prices = data['price'][:, ~equal(data[key], None)]
+                sizes = data['size_class'][:, ~equal(data[key], None)]
             for value in set(values):
-                if len(values[:,equal(values,value)]) >2:
-                    print "graphing with key: %s and value %s" % (key,unicode(value))
+                if len(values[:, equal(values, value)]) >2:
+                    print "graphing with key: %s and value %s" % (key, unicode(value))
                     pyplot.figure(largename)
-                    color = (float(unique.index(value)))/(float(len(unique)))
+                    color = (float(unique.index(value))) / (float(len(unique)))
                     edgecolor = color#max(0,color-.2)
                     if kwargs['cmap']:
-                        edgecolor = kwargs['cmap'](int(round(float(kwargs['cmap'].N)*float(edgecolor))))
-                        color=kwargs['cmap'](int(round(float(kwargs['cmap'].N)*color)))
+                        edgecolor = kwargs['cmap'](int(round(float(kwargs['cmap'].N) * float(edgecolor))))
+                        color = kwargs['cmap'](int(round(float(kwargs['cmap'].N) * color)))
                     else:
                         edgecolor = str(edgecolor)
                         color = str(color)
 
-                    cursizes = sizes[:,values==value]
-                    curprices = prices[:,values==value]
-                    rectlarge = pyplot.Rectangle((min(cursizes)-1,min(curprices)-10),
-                                            max(cursizes)-min(cursizes)+2,
-                                            max(curprices)-min(curprices)+20,
+                    cursizes = sizes[:, values == value]
+                    curprices = prices[:, values == value]
+                    rectlarge = pyplot.Rectangle((min(cursizes) - 1, min(curprices) - 10),
+                                            max(cursizes) - min(cursizes) + 2,
+                                            max(curprices) - min(curprices) + 20,
                                             edgecolor=edgecolor,
                                             linewidth=10,
                                             facecolor=color,
                                             alpha=.1)
-                    pyplot.scatter(cursizes,curprices,c=color,label=unicode(value),norm=colors.NoNorm(),**kwargs)#c=data[key+'map'],,cmap=cm.gray)
+                    pyplot.scatter(cursizes, curprices, c=color, label=unicode(value), norm=colors.NoNorm(), **kwargs)#c=data[key+'map'],,cmap=cm.gray)
                     pyplot.gca().add_patch(rectlarge)
-                    pyplot.gca().text(max(largelims['xmin']+1,min(cursizes)+2),min(largelims['ymax']-100,max(curprices)-300),unicode(value))
+                    pyplot.gca().text(max(largelims['xmin'] + 1, min(cursizes) + 2),
+                                       min(largelims['ymax'] - 100,max(curprices) - 300),unicode(value))
                     pyplot.figure(zoomname)
-                    rectzoom = pyplot.Rectangle((min(cursizes)-1,min(curprices)-10),
+                    rectzoom = pyplot.Rectangle((min(cursizes) - 1,min(curprices) - 10),
                         max(cursizes)-min(cursizes)+2,
                         max(curprices)-min(curprices)+20,
                         edgecolor=edgecolor,
@@ -139,8 +140,8 @@ def genplots(save=False,folder="images",**kwargs):
             pyplot.legend()
 
             if save:
-                pyplot.savefig("%s/%s.png" % (folder,zoomname))
-genplots(save=False,folder="squares",s=400,cmap=cm.jet)
+                pyplot.savefig("%s/%s.png" % (folder, zoomname))
+genplots(save=False, folder="squares", s=400, cmap=cm.jet)
 pyplot.show()
 '''
 
