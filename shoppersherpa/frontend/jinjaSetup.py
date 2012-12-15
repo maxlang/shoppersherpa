@@ -31,5 +31,5 @@ def jinjaSetup():
     filters['sortedvalues'] = sortedvalues
     filters['values'] = values
 
-    Jinja2Template.settings['extensions'] = ['jinja2.ext.loopcontrols']
+    Jinja2Template.settings['extensions'] = ['jinja2.ext.loopcontrols','jinja2.ext.i18n']
 

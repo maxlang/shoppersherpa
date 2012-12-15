@@ -1,5 +1,15 @@
 {# TODO: should I move the % display stuff to javascript? #}
 
+{# TODO: enable i18n for nicer pluralization syntax #}
+{% macro pluralize(count, singular, plural) -%}
+    {%- if count==1 -%}
+        {{singular}}
+    {%- else -%}
+        {{plural}}
+    {%- endif -%}
+{%- endmacro %}
+
+
 <div class="filter">
     <h1>{{attr.displayName|capitalize}}</h1>
     <form id="{{attr.name}}" action="/filter" method="POST">
@@ -8,11 +18,21 @@
                 {% set options = attr.options|sort(attribute='count',reverse=True) %}
                 {#% set most = options[0].count|round|int %#}
                 {# set most to total instead of largest #}
-                {% set most = sum([o.count|round|int for o in options]) %}
+                {% set most = options|sum("count")|round|int %}
                 {% for option in options if options.count > 0 %}
-                    {% if loop.index <= 5 %}
+                    {% if loop.index <= 4 %}
+                        {% if option.stats.ratings_avg %}
+                            {% set r=option.stats.ratings_avg.mean|round(1)|int %}
+                            {% set star=pluralize(r,"star","stars") %}
+                            <img class="rating" src="/static/img/{{r~star}}.png" title="Average rating: {{r ~ " " ~ star}}" />
+                        {% else %}
+                            <img class="rating" src="/static/img/norating.png" title="No Rating Data" />
+                        {% endif %}
+
+                        {% set d=((option.stats.price.mean-absoluteStats.priceMin)/absoluteStats.priceRange)|round|int + 1 %}
+                        <img class="rating" src="/static/img/{{d}}dollar.png" title="Average price: ${{option.stats.price.mean|round}}" />
                         <div class="checkbox"
-                                title="Average price: {{option.stats.price.mean|round}}{{", Average rating: " ~ option.stats.ratings_avg.mean|round(1) if option.stats.ratings_avg}}">
+                                title="{{option['count']}} televisions">
                             {#<input id="{{attr.name}}{{loop.index}}" type="checkbox" name="{{attr.name}}" value="{{option.value}}">#}
                             <div for="{{attr.name}}{{loop.index}}" ><div class="bar" style="width:{{((option.count/most)*100)|round}}%;"></div>{{option.value}} {{attr.units if attr.units}}</div>
                         </div>

@@ -154,7 +154,7 @@ def query(jsonString):
 
     products = [p for p in products]
 
-    selected_attrs = ['size']
+    selected_attrs = ['size_class']
     if 'attributes' in jsonQuery:
         selected_attrs = jsonQuery['attributes']
 
@@ -163,7 +163,8 @@ def query(jsonString):
     response_json = {'attrs': {},
                      'selectedAttrs': selected_attrs,
                      'rawData': [],
-                     'topProducts': []}
+                     'topProducts': [],
+                     'absoluteStats':{'priceMax':9999.98,'priceMin':69.99,'priceRange':999.98-69.99}} #TODO: populate automatically
 
     for ai in AttrInfo.objects.filter(**{'is_independant': True}):
         if ai.rank < 0:
@@ -259,11 +260,11 @@ def product(jsonString):
 if __name__ == "__main__":
     import doctest
     xxx = query('''{"keywords":"600Hz 1080p used Plasma HDTV",
-    "attributes":["size", "refresh"],
+    "attributes":["size_class", "refresh"],
     "filters":[{"attribute":"brand",
                 "type":"include",
                 "value":["Sony","Toshiba"]},
-               {"attribute":"size",
+               {"attribute":"size_class",
                 "type":"range",
                 "value":[6,null]}]}''')
     yyy = query('''{"keywords":"televisions"}''')

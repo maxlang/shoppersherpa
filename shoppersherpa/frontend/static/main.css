@@ -198,11 +198,14 @@ div#graphArea {
 #attributeTabs .filter div.checkbox,
 #attributeTabs .filter div.tick
 {
-    float:left;
-    font-size:12px;
+    float:right;
+    font-size:20px;
     font-weight:bold;
     font-family:sans-serif;
-    width:100%;
+    width:200px;
+    height:32px;
+    line-height:32px;
+    overflow:hidden;
     margin:2px;
 }
 
@@ -238,7 +241,7 @@ div.filter {
     border-bottom-right-radius: 0px;
     padding:10px;
     position:relative;
-    width:200px;
+    width:280px;
     overflow:hidden;
 }
 
@@ -246,8 +249,15 @@ div.filter div.inputs {
 
 }
 
+div.filter img {
+    width:36px;
+    height:36px;
+    float:left;
+}
+
 #attributeTabs {
     margin:40px;
+    margin-top:0px;
     float:left;
     width:300px;
 }
