@@ -130,7 +130,7 @@ html,body,div#content {
 /*** Layout ***/
 
 div#topBar {
-    height:15%;
+    height:10%;
     width:100%;
     min-height:100px;
     min-width:300px;
@@ -243,6 +243,7 @@ div.filter {
     position:relative;
     width:280px;
     overflow:hidden;
+    padding-top: 5px;
 }
 
 div.filter div.inputs {

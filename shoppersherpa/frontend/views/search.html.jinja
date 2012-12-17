@@ -17,12 +17,14 @@
         {% endif %}
     {% endfor %}
     </div>
+    <canvas />
 </div>
-
-<div id="rightBar">
-<h1>Products</h1>
-{% for product in topProducts %}
-    {% include "product.html.jinja" %} {# TODO: should this be a macro instead? #}
-{% endfor %}
-</div>
+{#
+    <div id="rightBar">
+        <h1>Products</h1>
+        {% for product in topProducts %}
+            {% include "product.html.jinja" %}    ## TODO: should this be a macro instead?
+        {% endfor %}
+    </div>
+#}
 {% endblock %}
