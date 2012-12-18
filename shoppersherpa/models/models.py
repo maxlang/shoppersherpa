@@ -7,14 +7,18 @@ Created on Thu Nov 01 13:07:10 2012
 from mongoengine import (
     DictField, ListField, StringField, DecimalField, IntField, MapField,
     DateTimeField, URLField, EmbeddedDocument, EmbeddedDocumentField,
-    BooleanField, DynamicDocument,connect)
+    BooleanField, DynamicDocument, connect)
+
+from shoppersherpa.config.config import masterConfig
 
 #TODO: make mongoengine models so you can reference dict elts like attributes
 # like bottle configdict
 
 #TODO: move away from models
 #TODO: make db configurable
-connect('test')
+#connect('test',host='localhost')
+connect(masterConfig.config['mongoDbName'], host=masterConfig.config['mongoHostString'])
+
 
 class Product(DynamicDocument):
     attr = DictField()
