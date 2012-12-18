@@ -15,13 +15,8 @@ Environment setup on Windows (assumes you already have python, and git installed
 ===============
 
 Python libraries to install:
-- numpy
-- scipy
-- matplotlib
-- django
-- djangotoolbox
-- pymongo
-- mongoengine
+Run the following command from the root folder
+>pip install -r reqs.txt
 
 ===============
 
