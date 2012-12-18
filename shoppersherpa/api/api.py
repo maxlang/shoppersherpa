@@ -209,11 +209,17 @@ def query(jsonString):
 
     all_relevant_attrs = selected_attrs + dep_attrs
 
+    #TODO: populate absolute stats automatically
     response_json = {'attrs': {},
                      'selectedAttrs': selected_attrs,
                      'rawData': [],
                      'topProducts': [],
-                     'absoluteStats':{'priceMax':9999.98,'priceMin':69.99,'priceRange':999.98-69.99}} #TODO: populate automatically
+                     'absoluteStats': {'priceMax': 9999.98,
+                                      'priceMin': 69.99,
+                                      'priceRange': 999.98 - 69.99,
+                                      'sizeMax': 92,
+                                      'sizeMin': 8,
+                                      'sizeRange': 92 - 8}}
 
     for ai in AttrInfo.objects.filter(**{'is_independant': True}):
         if ai.rank < 0:

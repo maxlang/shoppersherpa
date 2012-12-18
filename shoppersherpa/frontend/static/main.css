@@ -147,8 +147,8 @@ div#rightBar {
 }
 
 div#graphArea {
-    height:75%;
-    width:80%;
+    height:89%;
+    width:100%;
     float:left;
     min-height:450px;
     min-width:1400px;
@@ -265,4 +265,11 @@ div.filter img {
 
 div.noOptions {
     padding-top:50px;
+}
+
+/* graph area canvas */
+
+#graphArea canvas {
+width:1200px;
+height:800px;
 }

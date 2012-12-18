@@ -17,7 +17,13 @@
         {% endif %}
     {% endfor %}
     </div>
-    <canvas />
+    <canvas id="graphCanvas">
+        <p>Your browser doesn't support canvas.</p>
+    </canvas>
+    <script>
+    var None = null;
+    var data = {{rawData}};
+    </script>
 </div>
 {#
     <div id="rightBar">
