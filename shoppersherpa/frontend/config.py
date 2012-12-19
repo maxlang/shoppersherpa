@@ -50,6 +50,10 @@ class Config(collections.Mapping):
         self.config['staticDir'] = os.path.join(self.curDir, self.config['staticDirName'])
         logger.debug("static dir: %s", self.config['staticDir'])
 
+        self.config['corkConfigDir'] = os.path.join(self.curDir, self.config['corkConfigDirName'])
+        logger.debug("static dir: %s", self.config['staticDir'])
+
+
     def __len__(self):
         return len(self.config)
 

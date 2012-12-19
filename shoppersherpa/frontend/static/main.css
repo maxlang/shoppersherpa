@@ -152,6 +152,7 @@ div#graphArea {
     float:left;
     min-height:450px;
     min-width:1400px;
+    position:relative;
 }
 
 /*** Top bar ***/
@@ -242,7 +243,7 @@ div.filter {
     padding:10px;
     position:relative;
     width:280px;
-    overflow:hidden;
+    /*overflow:hidden;*/
     padding-top: 5px;
 }
 
@@ -250,10 +251,43 @@ div.filter div.inputs {
 
 }
 
-div.filter img {
+div.filter div.input {
+    width:280px;
+    clear:both;
+}
+
+div.filter div.input.hidden {
+    display:none;
+}
+
+div.filter img.icon {
     width:36px;
     height:36px;
     float:left;
+}
+
+div.filter img.action {
+    width: 36px;
+    height: 36px;
+    float:right;
+    opacity:.9;
+    margin-right:15px;
+}
+
+div.filter img.action.only {
+    width: 50px;
+    height: 50px;
+    margin-top: -17px;
+}
+
+div.filter .actions {
+    position: absolute;
+    right: 0px;
+    display:none;
+    z-index:10;
+    background-color:rgba(255, 255, 255, 0.5);
+    border:3px solid rgba(100, 100, 100, 0.5);
+    border-radius:10px;
 }
 
 #attributeTabs {
@@ -265,6 +299,31 @@ div.filter img {
 
 div.noOptions {
     padding-top:50px;
+}
+
+div.filter .more {
+    text-decoration: underline;
+    font-size: 30px;
+    font-family: helvetica;
+}
+
+/* graph */
+
+#graph {
+    width:1200px;
+    height:800px;
+    position:relative;
+    margin-left:400px;
+}
+
+#graph .point {
+    width:10px;
+    height:10px;
+    background-color:#000;
+    position:absolute;
+    border-radius: 10px;
+    margin-bottom: -5px;
+    margin-left: -5px;
 }
 
 /* graph area canvas */

@@ -1,2 +1,3 @@
 viewDirName : "views"
 staticDirName : "static"
+corkConfigDirName : "cork_config"

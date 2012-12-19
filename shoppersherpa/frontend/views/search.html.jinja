@@ -12,18 +12,23 @@
 <div id="graphArea">
     <div id="attributeTabs">
     {% for attr in attrs.values()|sort(attribute='rank') if attr.options|count > 0 and attr.name not in selectedAttrs %}
-        {% if loop.index <= 5 %}
+        {% if loop.index <= 4 %}
             {% include "attribute.html.jinja" %}
         {% endif %}
     {% endfor %}
     </div>
-    <canvas id="graphCanvas">
+    <div id="graph">
+        {% for point in rawData %}
+            {% include "point.html.jinja" %}
+        {% endfor %}
+    </div>
+    {#<canvas id="graphCanvas">
         <p>Your browser doesn't support canvas.</p>
     </canvas>
     <script>
     var None = null;
     var data = {{rawData}};
-    </script>
+    </script>#}
 </div>
 {#
     <div id="rightBar">

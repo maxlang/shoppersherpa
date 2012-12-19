@@ -216,12 +216,13 @@ def query(jsonString):
                      'topProducts': [],
                      'absoluteStats': {'priceMax': 9999.98,
                                       'priceMin': 69.99,
-                                      'priceRange': 999.98 - 69.99,
+                                      'priceRange': 9999.98 - 69.99,
                                       'sizeMax': 92,
                                       'sizeMin': 8,
                                       'sizeRange': 92 - 8}}
 
     for ai in AttrInfo.objects.filter(**{'is_independant': True}):
+        all_relevant_attrs.append(ai.name)
         if ai.rank < 0:
             continue
 
@@ -246,7 +247,7 @@ def query(jsonString):
             val_json['count'] = len(val_filtered)
             val_json['stats'] = {}
 
-            for dep in dep_attrs:
+            for dep in dep_attrs + selected_attrs:
                 dep_filtered = docSetFilter(val_filtered, None, None, dep)
                 if len(dep_filtered) == 0:
                     continue
