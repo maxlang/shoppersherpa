@@ -1,0 +1,3 @@
+mongoHostString : "mongodb://user:insecure@ds043957.mongolab.com:43957/buynoculars"
+mongoDbName : "buynoculars"
+
