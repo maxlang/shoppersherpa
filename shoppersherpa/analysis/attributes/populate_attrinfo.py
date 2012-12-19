@@ -1,4 +1,6 @@
 from shoppersherpa.models.models import (AttrInfo, Product)
+from shoppersherpa.api.api import argmax
+import math
 #from shoppersherpa.models import ParsedProduct
 
 
@@ -14,14 +16,35 @@ def normalize3d(prod):
     name = prod.attr['name'].lower()
     return "3d" in name
 
+
+def normalizeSizeClass(prod):
+    size = fallbackNormalize(prod, ['screenSizeIn', 'screenSizeClassIn'])
+    if size is None:
+        return None
+    return roundToListValues(size, range(0, 100, 2))
+
+
+def roundToListValues(val, val_list):
+    return argmax(val_list, lambda x: abs(val - x), -1)
+
+
 if __name__ == "__main__":
+    size_class_ai = AttrInfo()
+    size_class_ai.name = "size_class"
+    size_class_ai.display_name = "Screen Size Class"
+    size_class_ai.help_text = "Blah blah blah Screen Size Class"
+    size_class_ai.is_discrete = False
+    size_class_ai.is_independant = True
+    size_class_ai.rank = 1
+    size_class_ai.units = "inches"
+
     size_ai = AttrInfo()
     size_ai.name = "size"
     size_ai.display_name = "Screen Size"
     size_ai.help_text = "Blah blah blah Screen Size"
     size_ai.is_discrete = False
     size_ai.is_independant = True
-    size_ai.rank = 1
+    size_ai.rank = -1
     size_ai.units = "inches"
 
     brand_ai = AttrInfo()
@@ -106,6 +129,7 @@ if __name__ == "__main__":
     price_ai.rank = None
 
     ai_elements = [(size_ai, lambda x: fallbackNormalize(x, ['screenSizeIn', 'screenSizeClassIn'])),
+                   (size_class_ai, normalizeSizeClass),
                    (brand_ai, lambda x: fallbackNormalize(x, ['manufacturer'])),
                    (tv_type_ai, lambda x: fallbackNormalize(x, ['tvType'])),
                    (res_ai, lambda x: fallbackNormalize(x, ['verticalResolution'])),

@@ -11,18 +11,26 @@
 </div>
 <div id="graphArea">
     <div id="attributeTabs">
-    {% for attr in attrs.values()|sort(attribute='rank') if attr.options|count > 0 %}
+    {% for attr in attrs.values()|sort(attribute='rank') if attr.options|count > 0 and attr.name not in selectedAttrs %}
         {% if loop.index <= 5 %}
             {% include "attribute.html.jinja" %}
         {% endif %}
     {% endfor %}
     </div>
+    <canvas id="graphCanvas">
+        <p>Your browser doesn't support canvas.</p>
+    </canvas>
+    <script>
+    var None = null;
+    var data = {{rawData}};
+    </script>
 </div>
-
-<div id="rightBar">
-<h1>Products</h1>
-{% for product in topProducts %}
-    {% include "product.html.jinja" %} {# TODO: should this be a macro instead? #}
-{% endfor %}
-</div>
+{#
+    <div id="rightBar">
+        <h1>Products</h1>
+        {% for product in topProducts %}
+            {% include "product.html.jinja" %}    ## TODO: should this be a macro instead?
+        {% endfor %}
+    </div>
+#}
 {% endblock %}

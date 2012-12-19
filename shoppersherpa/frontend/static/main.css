@@ -130,7 +130,7 @@ html,body,div#content {
 /*** Layout ***/
 
 div#topBar {
-    height:15%;
+    height:10%;
     width:100%;
     min-height:100px;
     min-width:300px;
@@ -147,8 +147,8 @@ div#rightBar {
 }
 
 div#graphArea {
-    height:75%;
-    width:80%;
+    height:89%;
+    width:100%;
     float:left;
     min-height:450px;
     min-width:1400px;
@@ -198,13 +198,27 @@ div#graphArea {
 #attributeTabs .filter div.checkbox,
 #attributeTabs .filter div.tick
 {
-    float:left;
-    font-size:12px;
+    float:right;
+    font-size:20px;
     font-weight:bold;
     font-family:sans-serif;
-    width:46px;
+    width:200px;
+    height:32px;
+    line-height:32px;
+    overflow:hidden;
     margin:2px;
+}
+
+div.checkbox div {
+    position:relative;
+}
+
+div.checkbox div div.bar {
     background-color:yellow;
+    position:absolute;
+    height:100%;
+    left:0;
+    z-index:-1;
 }
 
 #attributeTabs .filter div.tick {
@@ -221,26 +235,41 @@ div.filter {
     margin: 0px;
     border: 1px solid;
     border-bottom: none;
-    height: 100px;
     box-shadow: 1px -3px 6px black;
     border-radius: 10px;
     border-bottom-left-radius: 0px;
     border-bottom-right-radius: 0px;
     padding:10px;
     position:relative;
-    width:250px;
+    width:280px;
+    overflow:hidden;
+    padding-top: 5px;
 }
 
 div.filter div.inputs {
-    position:absolute;
-    bottom:0px;
+
+}
+
+div.filter img {
+    width:36px;
+    height:36px;
+    float:left;
 }
 
 #attributeTabs {
     margin:40px;
-    float:right;
+    margin-top:0px;
+    float:left;
+    width:300px;
 }
 
 div.noOptions {
     padding-top:50px;
+}
+
+/* graph area canvas */
+
+#graphArea canvas {
+width:1200px;
+height:800px;
 }

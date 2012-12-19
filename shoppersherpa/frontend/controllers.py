@@ -47,11 +47,11 @@ def search():
     jsonQuery = form2json(request.forms)
     """
     jsonQuery = '''{"keywords":"600Hz 1080p used Plasma HDTV",
-    "attributes":["size", "refresh"],
+    "attributes":["size_class", "refresh"],
     "filters":[{"attribute":"brand",
                 "type":"include",
                 "value":["Sony","Toshiba"]},
-               {"attribute":"size",
+               {"attribute":"size_class",
                 "type":"range",
                 "value":[6,null]}]}'''
     """
