@@ -21,8 +21,8 @@ Python libraries to install:
 - django
 - djangotoolbox
 - pymongo
-- mongoengine
-
+- mongoengine (use maxwgl/mongoengine on github)
+- bottle-cork
 ===============
 
 Eclipse tips:

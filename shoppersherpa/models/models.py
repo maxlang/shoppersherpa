@@ -11,7 +11,7 @@ from mongoengine import (
 
 #TODO: move away from models
 #TODO: make db configurable
-connect('test')
+connect('buynoculars','mongodb://user:insecure@ds043957.mongolab.com:43957/buynoculars')
 
 class Product(DynamicDocument):
     attr = DictField()
