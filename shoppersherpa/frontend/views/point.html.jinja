@@ -1,10 +1,12 @@
 <div class="point"
+    {% set left = ["0%"] %}
+    {% set bottom = ["0%"] %}
     {%- for attr,value in point.items() -%}
         data-{{attr}}="{{value}}"
-        {%- if attr=="size_class" and value is not none -%}
-            data-left="{{ ((value - absoluteStats.sizeMin)/absoluteStats.sizeRange)*100 }}%"
-        {%- elif attr=="price" and value is not none -%}
-            data-bottom="{{ ((value - absoluteStats.priceMin)/absoluteStats.priceRange)*100 }}%"
-        {%- endif -%}
-    {%- endfor %}
-    > </div>
+    {%- endfor -%}
+    {%- if "size_class" in point and point["size_class"] is not none and "price" in point and point["price"] is not none -%}
+        style="left:{{((point["size_class"] - absoluteStats.sizeMin)/absoluteStats.sizeRange)*100}}%; bottom:{{((point["price"] - absoluteStats.priceMin)/absoluteStats.priceRange)*100}}%;"
+    {%- else -%}
+        style="display:none;"
+    {%- endif -%}
+ > </div>

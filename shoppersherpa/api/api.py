@@ -10,7 +10,7 @@ logger = logging.getLogger(__name__)
 #TODO: how do I deal with debug logging in doctests?
 
 
-def getSingleProductJson(prod, attrs, include_name=False, include_image=False):
+def getSingleProductJson(prod, attrs, include_name=False, include_image=False, include_url=True):
     json = {}
     if attrs is None:
         attrs = prod.normalized.keys()
@@ -25,6 +25,10 @@ def getSingleProductJson(prod, attrs, include_name=False, include_image=False):
 
     if include_name:
         json['name'] = prod.attr['name']
+
+    if include_url:
+        #logger.debug(prod.attr)
+        json['url'] = prod.attr['url']
 
     return json
 
@@ -45,13 +49,15 @@ def querySingleProduct(**kwargs):
             img = kwargs['image']
         if 'name' in kwargs:
             name = kwargs['name']
+        if 'url' in kwargs:
+            url = kwargs['url']
 
         if prod is not None:
             attrs = None
             if 'attrs' in kwargs:
                 attrs = kwargs['attrs']
 
-            return getSingleProductJson(prod, attrs, name, img)
+            return getSingleProductJson(prod, attrs, name, img, url)
 
     return None
 
@@ -183,7 +189,7 @@ def query(jsonString):
 
     # TODO: enable keywords - get a set of products based on the keywords
     # keywords = jsonQuery['keywords']
-    products = Product.objects.only("normalized", "attr.name", "attr.image")
+    products = Product.objects.only("normalized", "attr.name", "attr.image", "attr.url")
     #products = Product.objects
 
     # TODO: should this stuff happen in the API? Or in helper functions?
@@ -268,7 +274,7 @@ def query(jsonString):
         response_json['rawData'].append(prod_json)
 
     if len(selected_attrs) > 0:
-        response_json['topProducts'] = [getSingleProductJson(p, None, True, True)
+        response_json['topProducts'] = [getSingleProductJson(p, None, True, True,True)
                                         for p in getTopProducts(products, selected_attrs[0], 'price', 5)]
 
         #response_json['topProducts'] = \
@@ -309,7 +315,7 @@ def product(jsonString):
     results = Product.objects.filter(**jsonQuery)
     if len(results) == 0:
         return None
-    return results[0]
+    return {'product':getSingleProductJson(results[0], None, True, True,True),'units':dict([(a.name,a.units) for a in AttrInfo.objects])}
 
 
 if __name__ == "__main__":

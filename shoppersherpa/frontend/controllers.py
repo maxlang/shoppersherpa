@@ -1,5 +1,5 @@
 from util import form2json
-from shoppersherpa.api.api import query
+from shoppersherpa.api.api import query,product
 from shoppersherpa import logging
 from bottle import (request, get, post, route,
                     run, jinja2_view as view, static_file,
@@ -70,10 +70,33 @@ def search():
     return dict(list(queryResult.items()) +
                 list(request.forms.items()))
 
+@post('/product')
+@view('product.html')
+def productHTML():
+    aaa.require(fail_redirect='/login')
+    jsonQuery = form2json(request.forms)
+    queryResult = product(jsonQuery)
+    #logger.debug(queryResult)
+    return dict(list(queryResult.items()) +
+                list(request.forms.items()))
+
+@post('attributes')
+@view('attributes.html')
+def attributeHTML():
+    aaa.require(fail_redirect='/login')
+    jsonQuery = form2json(request.forms)
+    queryResult = query(jsonQuery)
+
+    #return the form input and the query result
+    return dict(list(queryResult.items()) +
+                list(request.forms.items()))
+
 ### CORK ROUTES ###
 
+#TODO: configure cork so that I don't have to specify it for every single addr
+
 #logging.basicConfig(format='localhost - - [%(asctime)s] %(message)s', level=logging.DEBUG)
-log = logging.getLogger(__name__)
+#log = logging.getLogger(__name__)
 
 # Use users.json and roles.json in the local example_conf directory
 aaa = Cork(config['corkConfigDir'])

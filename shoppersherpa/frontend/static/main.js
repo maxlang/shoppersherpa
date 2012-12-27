@@ -4,15 +4,11 @@
 //init fn
 $(function() {
 
+    var filters = [];
+
     $('.submit').click(function() {
         $(this).closest('form').submit();
         return false;
-    });
-
-    $('.point').each(function(i,e) {
-        var $e = $(e);
-        $e.css("bottom",$e.data("bottom"));
-        $e.css("left",$e.data("left"));
     });
 
     $(".input").hover(function() {
@@ -23,7 +19,7 @@ $(function() {
         var attr = $check.data("attr");
         var value = $check.data("value");
         $(".point[data-" + attr + "='" + value + "']")
-            .css("background-color","yellow")
+            .css("background-color","#919191")
             .css("z-index",1);
     },
     function() {
@@ -38,52 +34,73 @@ $(function() {
         .css("z-index",0);;
     });
 
-    $(".link.more").click(function() {
+    function more() {
         $(this).nextAll().show();
         $(this).removeClass("more").addClass("less");
-        $(this).text("less");
+        $(this).text("Less");
+        $(this).click(less);
+    }
 
-    })
+    function less() {
+        $(this).nextAll().hide();
+        $(this).removeClass("less").addClass("more");
+        $(this).text("More");
+        $(this).click(more);
+    }
 
-//    $canvas = $('canvas#graphCanvas');
+    $(".link.more").click(more);
 
-//    alert(data);
+    $(".point").hover(function() {
+        $this = $(this);
+        var size = $this.data("size_class");
+        var price = $this.data("price");
+        var priceperinch = price/size;
+        $this.css("background-color","#919191");
+        $("#point-info").html(size+"\"" + " at $" + Math.round(priceperinch,2) + "/inch, " + "total $" + price);
+    },
+    function() {
+        $this = $(this);
+        $this.css("background-color","black");
+        $("#point-info").html("");
+    });
 
-//    graph($canvas,
-//          data,
-//          10000,70,92,8);
+ //$.post('/tracker/add', trackerData, 'json').success(function () {
+
+    $(".point").click(function() {
+
+        $this = $(this);
+        $("#product-info").load("/product",{"id":$this.data("id")},function() {
+            $(".close").click(function() {
+                $(this).parent().hide();
+            });
+        });
+        //$.post('/product',{},'html').success(function () {
+
+        //});
+    });
+
+    $(".deselect").click(function() {
+        //grey out and switch to a "select" button
+
+        //move to the bottom of the list
+
+        //pull up another filter from below the fold
+
+        //
+
+    });
 
 });
 
-/*
-Point data is a list of points with size, price and id
-*/
-function graph($canvas, pointData,maxPrice,minPrice,maxSize,minSize) {
-    var width = $canvas.width();
-    var height = $canvas.height();
 
-    $canvas[0].height = height;
-    $canvas[0].width = width;
+//view product info
+function viewProduct() {
 
-    $canvas.clearCanvas();
 
-    var i;
+}
 
-    for(i=0;i<pointData.length;i++) {
-        size = pointData[i].size_class;
-        price = pointData[i].price;
-        id = pointData[i].id;
-        rating = pointData[i].ratings_avg;
-
-        x = (size - minSize)/(maxSize-minSize) * width;
-        y = (price - minPrice)/(maxPrice-minPrice) * height;
-
-        $canvas.drawEllipse({
-            x: x, y: y, width: 10, height: 10,
-            fillStyle: "#000",
-            fromCenter: true
-        });
-    }
+//view point info
+function pointInfo() {
 
 
 }
