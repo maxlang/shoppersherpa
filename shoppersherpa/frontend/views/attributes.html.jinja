@@ -1,7 +1,5 @@
-<div id="attributeTabs">
-    {% for attr in attrs.values()|sort(attribute='rank') if attr.options|count > 0 and attr.name not in selectedAttrs %}
-        {% if loop.index <= 4 %}
-            {% include "attribute.html.jinja" %}
-        {% endif %}
-    {% endfor %}
-</div>
+{% for attr in attrs.values()|sort(attribute='rank') if attr.options|count > 0 and attr.name not in selectedAttrs %}
+    {% if loop.index <= 4 %}
+        {% include "attribute.html.jinja" %}
+    {% endif %}
+{% endfor %}

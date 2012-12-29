@@ -17,7 +17,7 @@
             {% if attr.isDiscrete %}
                 {% set options = attr.options|sort(attribute='count',reverse=True) %}
                 {#% set most = options[0].count|round|int %#}
-                {# set most to total instead of largest #}
+                {# TODO: set most to total instead of largest #}
                 {% set most = options|sum("count")|round|int %}
                 {% for option in options if options.count > 0 %}
                     {% if loop.index <= 4 %}
@@ -28,31 +28,51 @@
                         {% endif %}
                         <div class="input hidden">
                     {% endif %}
-                        {% if option.stats.ratings_avg %}
-                            {% set r=option.stats.ratings_avg.mean|round(1)|int %}
-                            {% set star=pluralize(r,"star","stars") %}
-                            <img class="icon" src="/static/img/{{r~star}}.png" title="Average rating: {{r ~ " " ~ star}}" />
+                        {% if options.count > 0 %}
+                            {% if option.stats.ratings_avg %}
+                                {% set r=option.stats.ratings_avg.mean|round(1)|int %}
+                                {% set star=pluralize(r,"star","stars") %}
+                                <img class="icon" src="/static/img/{{r~star}}.png" title="Average rating: {{r ~ " " ~ star}}" />
+                            {% else %}
+                                <img class="icon" src="/static/img/norating.png" title="No Rating Data" />
+                            {% endif %}
+                            {% if option.stats.price %}
+                                {% set d=(((option.stats.price.mean-absoluteStats.priceMin)/(absoluteStats.priceRange))*5)|round|int + 1 %}
+                                <img class="icon" src="/static/img/{{d}}dollar.png" title="Average price: ${{option.stats.price.mean|round}}" />
+                            {% else %}
+                                <img class="icon" src="/static/img/norating.png" title="No Rating Data" />
+                            {% endif %}
+                            <div class="actions">
+                                <img class="action only" src="/static/img/only.png" title="Select ONLY this option" />
+                                <img class="action deselect" src="/static/img/deselect.png" title="Deselect this option" />
+                            </div>
+                            <!--<img class="action select" src="/static/img/select.png" title="select this option" />-->
+                            <div class="checkbox"
+                                 title="{{option['count'] ~ pluralize(option['count'],"television","televisions")}}"
+                                 data-attr="{{attr.name}}"
+                                 data-value="{{option.value}}" >
+                                {#<input id="{{attr.name}}{{loop.index}}" type="checkbox" name="{{attr.name}}" value="{{option.value}}">#}
+                                <div><div class="bar" style="width:{{((option.count/most)*100)|round}}%;"></div>{{option.value}} {{attr.units if attr.units}}</div>
+                            </div>
                         {% else %}
-                            <img class="icon" src="/static/img/norating.png" title="No Rating Data" />
-                        {% endif %}
-                        {% set d=(((option.stats.price.mean-absoluteStats.priceMin)/(absoluteStats.priceRange))*5)|round|int + 1 %}
-                        <img class="icon" src="/static/img/{{d}}dollar.png" title="Average price: ${{option.stats.price.mean|round}}" />
+                            <div class="actions">
+                                <img class="action only" src="/static/img/only.png" title="Select ONLY this option" />
+                                {# TODO: if it's in the current set of filters, only then should we off the "reslect" option #}
+                                <img class="action select" src="/static/img/select.png" title="Select this option" />
+                            </div>
+                            <div class="checkbox zero"
+                                 title="0 televisions"
+                                 data-attr="{{attr.name}}"
+                                 data-value="{{option.value}}" >
+                                {#<input id="{{attr.name}}{{loop.index}}" type="checkbox" name="{{attr.name}}" value="{{option.value}}">#}
+                                <div><div class="bar" style="width:0%;"></div>{{option.value}} {{attr.units if attr.units}}</div>
+                            </div>
 
-                        <div class="actions">
-                            <img class="action only" src="/static/img/only.png" title="Select ONLY this option" />
-                            <img class="action deselect" src="/static/img/deselect.png" title="Deselect this option" />
-                        </div>
-                        <!--<img class="action select" src="/static/img/select.png" title="select this option" />-->
-                        <div class="checkbox"
-                             title="{{option['count']}} televisions"
-                             data-attr="{{attr.name}}"
-                             data-value="{{option.value}}" >
-                            {#<input id="{{attr.name}}{{loop.index}}" type="checkbox" name="{{attr.name}}" value="{{option.value}}">#}
-                            <div><div class="bar" style="width:{{((option.count/most)*100)|round}}%;"></div>{{option.value}} {{attr.units if attr.units}}</div>
-                        </div>
+                        {% endif %}
                     </div>
                 {% endfor %}
             {% else %}
+{#
                 {% set options = attr.options|sort(attribute='value') %}
                 {% set max = options[-1].value|round|int %}
                 {% for option in options if options.count > 0 %}
@@ -68,6 +88,7 @@
                 {% else %}
                     <div> No sizes available </div>
                 {% endif %}
+#}
             {% endif %}
         </div>
     </form>

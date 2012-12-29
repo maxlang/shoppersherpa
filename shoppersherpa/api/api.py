@@ -178,6 +178,8 @@ def query(jsonString):
 
     """
 
+    logger.debug(jsonString)
+
     # decode json
     # Product.objects.select_related()
     jsonQuery = parseJson(jsonString)
@@ -245,29 +247,33 @@ def query(jsonString):
         for val in ai.values:
             val_filtered = docSetFilter(products, ai.name, val, None)
             if len(val_filtered) == 0:
-                continue
+                val_json = {}
+                ai_json['options'].append(val_json)
+                val_json['value'] = val
+                val_json['count'] = 0
+                val_json['stats'] = {}
+            else:
+                val_json = {}
+                ai_json['options'].append(val_json)
+                val_json['value'] = val
+                val_json['count'] = len(val_filtered)
+                val_json['stats'] = {}
 
-            val_json = {}
-            ai_json['options'].append(val_json)
-            val_json['value'] = val
-            val_json['count'] = len(val_filtered)
-            val_json['stats'] = {}
+                for dep in dep_attrs + selected_attrs:
+                    dep_filtered = docSetFilter(val_filtered, None, None, dep)
+                    if len(dep_filtered) == 0:
+                        continue
 
-            for dep in dep_attrs + selected_attrs:
-                dep_filtered = docSetFilter(val_filtered, None, None, dep)
-                if len(dep_filtered) == 0:
-                    continue
+                    vector = docSetToVector(val_filtered, None, None, dep)
 
-                vector = docSetToVector(val_filtered, None, None, dep)
-
-                dep_json = {}
-                val_json['stats'][dep] = dep_json
-                dep_json['name'] = dep
-                dep_json['mean'] = numpy.mean(vector)
-                dep_json['median'] = numpy.median(vector)
-                dep_json['stdDev'] = numpy.std(vector)
-                dep_json['min'] = numpy.min(vector)
-                dep_json['max'] = numpy.max(vector)
+                    dep_json = {}
+                    val_json['stats'][dep] = dep_json
+                    dep_json['name'] = dep
+                    dep_json['mean'] = numpy.mean(vector)
+                    dep_json['median'] = numpy.median(vector)
+                    dep_json['stdDev'] = numpy.std(vector)
+                    dep_json['min'] = numpy.min(vector)
+                    dep_json['max'] = numpy.max(vector)
 
     for prod in products:
         prod_json = getSingleProductJson(prod, all_relevant_attrs)

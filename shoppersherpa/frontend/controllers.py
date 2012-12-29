@@ -80,13 +80,16 @@ def productHTML():
     return dict(list(queryResult.items()) +
                 list(request.forms.items()))
 
-@post('attributes')
+@post('/attributes')
 @view('attributes.html')
 def attributeHTML():
     aaa.require(fail_redirect='/login')
-    jsonQuery = form2json(request.forms)
-    queryResult = query(jsonQuery)
-
+    logger.info(request.forms.query)
+    jsonString = request.forms.query
+    queryResult = query(jsonString)
+    #logger.debug(queryResult["selectedAttrs"])
+    logger.debug(queryResult)
+    #logger.debug(queryResult["selectedAttrs"])
     #return the form input and the query result
     return dict(list(queryResult.items()) +
                 list(request.forms.items()))
